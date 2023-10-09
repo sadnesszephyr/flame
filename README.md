@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://i.imgur.com/DnudRMs.png" alt="Mono Logo" width="128" height="128">
+    <img src="https://i.imgur.com/DnudRMs.png" alt="Campfire Logo" width="128" height="128">
     <h1 align="center">Campfire <img alt="license" src="https://img.shields.io/badge/BETA-F16E14?style=flat-square"></h1>
 </p>
 
