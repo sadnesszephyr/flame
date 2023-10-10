@@ -66,15 +66,16 @@
 <style lang="scss">
 .header {
 	height: 3rem;
-	box-shadow:
+	box-shadow: 
 		0 0.5px 0 0 rgba(0, 0, 0, 0.07),
-		0 calc(-1 * var(--border-width)) 0 0 var(--border-color) inset;
+		0 0 0 var(--border-width) var(--border-color) inset;
 	padding: 0 1rem 0 0.5rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	background: var(--background);
 	z-index: 5;
+	position: relative;
 }
 
 .level {
