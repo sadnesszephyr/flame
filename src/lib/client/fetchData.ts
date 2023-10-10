@@ -1,3 +1,4 @@
+import { t } from '../shared/localization'
 import { userData } from './store'
 
 export async function fetchData(method: string, body?: any) {
@@ -13,7 +14,7 @@ export async function fetchData(method: string, body?: any) {
 
 	if(!res.ok) {
 		window.Telegram.WebApp.showPopup({
-			title: `Произошла ошибка`,
+			title: 'An error has occured',
 			message: data.message ?? res.statusText
 		})
 
