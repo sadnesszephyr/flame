@@ -1,4 +1,5 @@
 {
+	"levelPopupTitle": "{{level}} уровень",
 	"api": {
 		"notEnoughCoins": "Недостаточно монет",
 		"notEnoughOrbs": "Недостаточно сфер",

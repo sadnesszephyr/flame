@@ -4,7 +4,8 @@
 	import { userData } from '$lib/client/store';
 	import { ripple } from '$lib/client/actions/ripple';
 	import type { User } from '@prisma/client'
-	import { getXpForNextLevel } from '../../shared/leveling'
+	import { getXpForNextLevel } from '$lib/shared/leveling'
+	import { t } from '$lib/shared/localization'
 
 	let myData: User = {
 		coins: 0,
@@ -43,7 +44,7 @@
 
 <header class="header">
 	<button use:ripple class="level" on:click={() => window.Telegram.WebApp.showPopup({
-		title: `${myData.level} уровень`,
+		title: $t('levelPopupTitle', { level: myData.level }),
 		message: `${myData.xp} / ${getXpForNextLevel(myData.level)} xp`
 	})}>
 		<span>{myData.level}</span>

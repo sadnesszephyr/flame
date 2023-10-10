@@ -1,4 +1,5 @@
 {
+	"levelPopupTitle": "{{level}} level",
 	"api": {
 		"notEnoughCoins": "Not enough coins",
 		"notEnoughOrbs": "Not enough orbs",
