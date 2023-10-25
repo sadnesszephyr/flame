@@ -1,4 +1,3 @@
-import { t } from '../shared/localization'
 import { userData } from './store'
 
 export async function fetchData(method: string, body?: any) {

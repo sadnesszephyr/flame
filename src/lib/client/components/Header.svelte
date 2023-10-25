@@ -14,7 +14,8 @@
 		level: 0,
 		orbs: 0,
 		xp: 0,
-		lastTimeFished: null
+		lastTimeFished: null,
+		username: ''
 	}
 
 	const xpProgress = tweened(0, {
@@ -55,11 +56,11 @@
 	<div class="wallet">
 		<span class="currency" class:negative={myData.coins < 0}>
 			{Math.round($coinsDisplayValue)}
-			<img draggable="false" class="currency-icon" src="icons/coin.webp" alt="coins"/>
+			<img draggable="false" class="currency-icon" src="/icons/coin.webp" alt="coins"/>
 		</span>
 		<span class="currency" class:negative={myData.orbs < 0}>
 			{Math.round($orbsDisplayValue)}
-			<img draggable="false" class="currency-icon" src="icons/orb.webp" alt="orbs"/>
+			<img draggable="false" class="currency-icon" src="/icons/orb.webp" alt="orbs"/>
 		</span>
 	</div>
 </header>

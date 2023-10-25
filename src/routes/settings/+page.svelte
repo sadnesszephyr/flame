@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { localSettings } from '$lib/client/store'
+	import { localSettings, userData } from '$lib/client/store'
 	import { ripple } from '$lib/client/actions'
 	import Toggle from '../../lib/client/components/Toggle.svelte'
 
@@ -11,6 +11,12 @@
 </script>
 
 <div class="block">
+	<a href="/settings/username" class="cell" use:ripple>
+		<div class="cell-text">
+			<span class="cell-name">@{$userData.username}</span>
+			<span class="cell-description">Username</span>
+		</div>
+	</a>
 	<label for="contrastMode" class="cell" use:ripple>
 		<div class="cell-text">
 			<span class="cell-name">Contrast mode</span>
@@ -41,6 +47,7 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 0 1.25rem;
+		text-decoration: none;
 	}
 
 	.cell-text {
@@ -50,6 +57,7 @@
 
 		.cell-name {
 			font-size: 0.9375rem;
+			color: var(--foreground);
 		}
 
 		.cell-description {

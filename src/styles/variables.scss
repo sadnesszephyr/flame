@@ -10,6 +10,7 @@
 	--muted: color-mix(in srgb, var(--background), var(--text) 33%);
 	
 	--danger: #F56058;
+	--success: #31b545;
 	--ripple-color: rgba(0, 0, 0, 0.05);
 	--border-color: rgba(0, 0, 0, 0.1);
 	--border-width: 0;
@@ -28,6 +29,7 @@
 		--muted: color-mix(in srgb, var(--background), var(--text) 25%);
 
 		--danger: #F16D66;
+		--success: #31b545;
 		--ripple-color: rgba(255, 255, 255, 0.05);
 		--border-color: rgba(255, 255, 255, 0.025);
 	}

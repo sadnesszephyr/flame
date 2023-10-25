@@ -7,6 +7,7 @@ export async function POST(event: RequestEvent) {
 			id: event.locals.initData.user.id
 		}, 
 		select: {
+			username: true,
 			coins: true,
 			orbs: true,
 			level: true,
@@ -14,5 +15,6 @@ export async function POST(event: RequestEvent) {
 			lastTimeFished: true
 		}
 	})
+
 	return json(user)
 }

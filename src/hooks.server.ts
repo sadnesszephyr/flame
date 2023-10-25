@@ -54,7 +54,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 			},
 			update: {},
 			create: {
-				id: initData.user.id
+				id: initData.user.id,
+				username: initData.user.username ?? `user${initData.user.id}`
 			}
 		})
 
