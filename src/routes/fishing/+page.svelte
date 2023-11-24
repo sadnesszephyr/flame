@@ -21,6 +21,7 @@
 	let myData: User | undefined = undefined
 	let fishingState: 'timeout' | 'idle' | 'waiting' | 'biting' | 'caught' | 'missed' = 'timeout'
 	let timeout: NodeJS.Timeout
+	let catchButtonPressed = false
 
 	$: if (myData) {
 		console.log(myData)
@@ -93,12 +94,16 @@
 {:else if fishingState === 'biting'}
 	<div class="fishing-action">
 		<Button
+			variant="primary"
+			disabled={catchButtonPressed}
 			on:click={async () => {
+				catchButtonPressed = true
 				currentDrop = await fetchData('catchFish')
 				fishingState = 'caught'
 				clearTimeout(timeout)
 				timeout = setTimeout(() => {
 					fishingState = 'timeout'
+					catchButtonPressed = false
 					timeout = setTimeout(() => {
 						fishingState = 'idle'
 					}, 30_000)
@@ -122,7 +127,7 @@
 	<div class="animation">
 		<LottiePlayer src="/animations/rainCloud.json" loop autoplay width={192} />
 	</div>
-	<div class="fishing-action">Ждём, когда клюнет</div>
+	<div class="fishing-action">Рыба сбежала</div>
 {/if}
 
 <style lang="scss">
