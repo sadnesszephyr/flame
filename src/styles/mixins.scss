@@ -20,6 +20,6 @@
 	box-shadow: 0px 0.5px 0px 0px rgba(0, 0, 0, 0.07);
 	border: var(--border-width) solid var(--border-color);
 	display: block;
-	animation: skeleton 2s ease-in-out infinite;
+	animation: skeleton-inversed 2s ease-in-out infinite;
 	border-radius: 0.5rem;
 }

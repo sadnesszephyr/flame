@@ -11,17 +11,20 @@ interface ItemData {
 	id: string
 	rarity?: ItemRarity
 	price?: number
+	useable?: boolean
 }
 
 export class Item {
 	id: string
 	rarity: ItemRarity
 	price: number
+	usable: boolean
 
 	constructor(data: ItemData) {
 		this.id = data.id
 		this.rarity = data.rarity ?? ItemRarity.Common
 		this.price = data.price ?? 0
+		this.usable = data.useable ?? false
 	}
 
 	get sellable() {
@@ -51,7 +54,8 @@ const itemsData: ItemData[] = [
 		price: 55
 	},
 	{
-		id: 'envelope'
+		id: 'envelope',
+		useable: true
 	},
 	{
 		id: 'shrimp',

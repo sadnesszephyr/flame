@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { ripple } from '$lib/client/actions/ripple'
 	import { t } from '$lib/shared/localization'
-	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player'
 	import { userData } from '$lib/client/store'
+	import { fetchData } from '../lib/client/fetchData'
 
 	window.Telegram.WebApp.BackButton.hide()
 	window.Telegram.WebApp.MainButton.hide()
@@ -25,6 +25,15 @@
 		fishingTimeRemained = new Date(value?.lastTimeFished ?? 0).getTime() + 30_000 - new Date().getTime()
 		if(fishingTimeRemained < 0) fishingTimeRemained = 0
 	})
+
+	async function handleBonusCardClick() {
+		const data = await fetchData('collectDailyBonus')
+		window.Telegram.WebApp.showPopup({
+			message: data.collected
+				? $t('home.dailyBonusMessage.collected.text')
+				: $t('home.dailyBonusMessage.timeout.text')
+		})
+	}
 </script>
 
 <div class="nav-card-list">
@@ -32,19 +41,19 @@
 		<img src="/icons/bag.webp" alt="inventory"/>
 		{$t('home.inventory')}
 	</a>
-	<a class="nav-card" href="/fishing" use:ripple draggable="false">
+	<a class="nav-card" href="/fishing" use:ripple>
 		<img src="/icons/fish.webp" alt="fishing"/>
 		{$t('home.fishing')}
 		<span class="progress" style:width={`${fishingTimeRemained / 30000 * 100}%`}/>
 	</a>
-	<a class="nav-card small" href="https://t.me/+0PEHgfl8IKIwZjky" use:ripple>
-		<img src="/icons/megaphone.webp" alt="news"/>
-		{$t('home.news')}
-	</a>
-	<div class="nav-card small disabled">
+	<button class="nav-card small" use:ripple on:click={handleBonusCardClick}>
+		<img src="/icons/leaves.webp" alt="daily bonus"/>
+		{$t('home.dailyBonus')}
+	</button>
+	<a class="nav-card small" href="/top" use:ripple>
 		<img src="/icons/clipboard.webp" alt="top"/>
 		{$t('home.top')}
-	</div>
+	</a>
 	<a class="nav-card small" href="/settings" use:ripple>
 		<img src="/icons/gear.webp" alt="settings"/>
 		{$t('home.settings')}
@@ -65,8 +74,9 @@
 		gap: 1.5rem;
 		color: var(--foreground);
 		font-size: 1rem;
-		line-height: 22px;
+		line-height: 1rem;
 		grid-column: span 3;
+		border: none;
 
 		&.small {
 			grid-column: span 2;

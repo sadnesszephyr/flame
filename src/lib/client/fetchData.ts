@@ -1,6 +1,12 @@
-import { userData } from './store'
+import { activeRequests, userData } from './store'
 
 export async function fetchData(method: string, body?: any) {
+	let requestId = Math.round(Math.random() * 100000)
+
+	activeRequests.update((requests) => {
+		return [...requests, requestId]
+	})
+
 	const res = await fetch('/api/' + method, {
 		body: JSON.stringify(body),
 		method: 'POST',
@@ -26,6 +32,10 @@ export async function fetchData(method: string, body?: any) {
 			...data._updates
 		}))
 	}
+
+	activeRequests.update((requests) => {
+		return requests.filter((id) => id !== requestId)
+	})
 
 	return data
 }

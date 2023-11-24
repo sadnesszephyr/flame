@@ -2,11 +2,12 @@
 	import { goto } from '$app/navigation'
 	import Button from '$lib/client/components/Button.svelte'
 	import { ripple } from '$lib/client/actions/ripple'
-	import { fetchData as request } from '$lib/client/fetchData'
+	import { fetchData } from '$lib/client/fetchData'
 	import { clientLanguage, t, userLanguage } from '$lib/shared/localization'
 	import Drawer from '$lib/client/components/Drawer.svelte'
 	import { items, type Item } from '$lib/shared/items'
 	import Await from '$lib/client/components/Await.svelte'
+	import { fade } from 'svelte/transition'
 
 	const webApp = window.Telegram.WebApp
 	webApp.expand()
@@ -14,7 +15,7 @@
 	webApp.BackButton.onClick(() => goto('/'))
 	webApp.MainButton.hide()
 
-	let inventoryPromise = request('getInventory')
+	let inventoryPromise = fetchData('getInventory')
 	let itemSelected: Item | null = null
 	let sellPageOpened: boolean = false
 	let sellQuantity = 1
@@ -29,8 +30,14 @@
 	}
 
 	async function sellItem(itemId: string, quantity: number) {
-		await request('sellItem', { item: itemId, quantity })
-		inventoryPromise = request('getInventory')
+		await fetchData('sellItem', { item: itemId, quantity })
+		inventoryPromise = fetchData('getInventory')
+	}
+
+	async function useItem(itemId: string) {
+		itemSelected = null
+		await fetchData(`useItem/${itemId}`)
+		inventoryPromise = fetchData('getInventory')
 	}
 </script>
 
@@ -81,13 +88,24 @@
 							<div class="item-actions">
 								{#if itemSelected.sellable}
 									<Button
-										on:click={async () => {
+										on:click={() => {
 											if (!itemSelected) return
 											sellPageOpened = true
 										}}
 										variant="secondary"
 									>
 										{$t('inventory.sell')}
+									</Button>
+								{/if}
+								{#if itemSelected.usable}
+									<Button
+										on:click={() => {
+											if (!itemSelected) return
+											useItem(itemSelected.id)
+										}}
+										variant="primary"
+									>
+										{$t('inventory.use')}
 									</Button>
 								{/if}
 							</div>

@@ -12,7 +12,8 @@ export async function POST(event: RequestEvent) {
 			orbs: true,
 			level: true,
 			xp: true,
-			lastTimeFished: true
+			lastTimeFished: true,
+			profilePhoto: true
 		}
 	})
 

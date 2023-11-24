@@ -1,8 +1,9 @@
 import { writable } from 'svelte/store'
 import type { User } from '@prisma/client'
 
-export const userData = writable<User>(undefined)
+export const activeRequests = writable<number[]>([])
 
+export const userData = writable<User>(undefined)
 
 interface LocalSettings {
 	contrastMode: boolean,

@@ -4,7 +4,7 @@
 * {
 	-webkit-tap-highlight-color: transparent;
 	-webkit-user-drag: none;
-	font-family: 'Roboto', 'Segoe UI', sans-serif;
+	font-family: var(--font);
 	user-select: none;
 	box-sizing: border-box;
 }
@@ -97,6 +97,20 @@ h1, h2, h3, h4, h5, h6, p {
 
 
 @keyframes skeleton {
+	0% {
+		background: var(--background-secondary);
+	}
+
+	50% {
+		background: var(--background);
+	}
+
+	100% {
+		background: var(--background-secondary);
+	}
+}
+
+@keyframes skeleton-inversed {
 	0% {
 		background: var(--background);
 	}

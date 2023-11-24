@@ -18,7 +18,10 @@
 		},
 		"envelope": {
 			"name": "Envelope",
-			"description": "An envelope with goodies received for reaching a new level."
+			"description": "An envelope with goodies received for reaching a new level.",
+			"use": {
+				"absence": "You don't have any envelopes"
+			}
 		},
 		"fish": {
 			"name": "Fish",
@@ -59,8 +62,16 @@
 	"home": {
 		"inventory": "Inventory",
 		"fishing": "Fishing",
-		"news": "News",
+		"dailyBonus": "Bonus",
 		"top": "Top",
-		"settings": "Settings"
+		"settings": "Settings",
+		"dailyBonusMessage": {
+			"collected": {
+				"text": "You received 40 coins! Come back tomorrow for a new reward."
+			},
+			"timeout": {
+				"text": "You have already collected a bonus today. Come back tomorrow for a new reward."
+			}
+		}
 	}
 }

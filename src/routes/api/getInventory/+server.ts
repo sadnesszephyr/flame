@@ -1,6 +1,6 @@
 import { json, type RequestEvent } from '@sveltejs/kit'
 import { database } from '$lib/server/database'
-import { giveUserXp } from '../../../lib/server/user'
+import { bot } from '$lib/server/bot'
 
 export async function POST(event: RequestEvent) {
 	let items = await database.inventoryItem.findMany({

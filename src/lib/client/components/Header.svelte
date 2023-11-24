@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cubicOut } from 'svelte/easing';
 	import { tweened,  } from 'svelte/motion';
-	import { userData } from '$lib/client/store';
+	import { activeRequests, userData } from '$lib/client/store';
 	import { ripple } from '$lib/client/actions/ripple';
 	import type { User } from '@prisma/client'
 	import { getXpForNextLevel } from '$lib/shared/leveling'
@@ -15,7 +15,8 @@
 		orbs: 0,
 		xp: 0,
 		lastTimeFished: null,
-		username: ''
+		username: '',
+		profilePhoto: ''
 	}
 
 	const xpProgress = tweened(0, {
@@ -63,6 +64,9 @@
 			<img draggable="false" class="currency-icon" src="/icons/orb.webp" alt="orbs"/>
 		</span>
 	</div>
+	{#if $activeRequests.length}
+		<div class="loading-indicator"/>
+	{/if}
 </header>
 
 <style lang="scss">
@@ -70,7 +74,7 @@
 	height: 3rem;
 	box-shadow: 
 		0 0.5px 0 0 rgba(0, 0, 0, 0.07),
-		0 0 0 var(--border-width) var(--border-color) inset;
+		0 calc(-1 * var(--border-width)) 0 0 var(--border-color) inset;
 	padding: 0 1rem 0 0.5rem;
 	display: flex;
 	align-items: center;
@@ -130,5 +134,27 @@
 
 .negative {
 	color: var(--danger);
+}
+
+
+.loading-indicator {
+	width: 100%;
+	height: 1px;
+	background: linear-gradient(to right, var(--accent), var(--background), var(--accent));
+	background-size: 200%;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+	0% {
+		background-position-x: 0%;
+	}
+
+	100% {
+		background-position-x: -200%;
+	}
 }
 </style>

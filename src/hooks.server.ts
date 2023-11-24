@@ -5,7 +5,10 @@ import { getT } from './lib/shared/localization'
 import { TELEGRAM_BOT_TOKEN } from '$env/static/private'
 
 export const handle: Handle = async ({ event, resolve }) => {
-	if(event.url.pathname.startsWith('/api')) {
+	if(
+		event.url.pathname.startsWith('/api')
+		&& !event.url.pathname.endsWith('webhook')
+	) {
 		const paramsRaw = event.request.headers.get('Authorization')
 		
 		if(!paramsRaw) {
@@ -56,6 +59,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			create: {
 				id: initData.user.id,
 				username: initData.user.username ?? `user${initData.user.id}`
+			},
+			include: {
+				inventoryItems: true
 			}
 		})
 

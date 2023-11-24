@@ -12,15 +12,17 @@ datasource db {
 }
 
 model User {
-    id             BigInt          @id
-    username       String          @unique
-    coins          Int             @default(100)
-    orbs           Int             @default(0)
-    xp             Int             @default(0)
-    level          Int             @default(0)
-    joined         DateTime        @default(now())
-    lastTimeFished DateTime?
-    inventoryItems InventoryItem[]
+    id              BigInt          @id
+    username        String          @unique
+    coins           Int             @default(100)
+    orbs            Int             @default(0)
+    xp              Int             @default(0)
+    level           Int             @default(0)
+    joined          DateTime        @default(now())
+    inventoryItems  InventoryItem[]
+    profilePhoto    String?
+    lastTimeFished  DateTime?
+	lastDailyBonus	DateTime?
 }
 
 model InventoryItem {

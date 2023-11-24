@@ -1,4 +1,4 @@
-import type { User } from '@prisma/client'
+import type { InventoryItem, User } from '@prisma/client'
 import type { tFunction } from './lib/shared/localization'
 
 declare global {
@@ -16,7 +16,9 @@ declare global {
 					allowsWriteToPM: boolean
 				}
 			},
-			user: User,
+			user: User & {
+				inventoryItems: InventoryItem[]
+			},
 			t: tFunction
 		}
 		// interface PageData {}

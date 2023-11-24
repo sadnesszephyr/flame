@@ -1,6 +1,6 @@
 {
 	"name": "campfire",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --port 1808",
@@ -14,6 +14,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-vercel": "^3.0.3",
 		"@sveltejs/kit": "^1.20.4",
 		"@types/crypto-js": "^4.1.2",
 		"@types/node": "^20.6.4",
@@ -37,6 +38,7 @@
 		"@prisma/client": "4.15.0",
 		"crypto-es": "^2.0.4",
 		"prisma": "^5.3.1",
+		"telescript": "^0.1.0",
 		"vite-imagetools": "^5.0.8",
 		"zod": "^3.22.2"
 	}
