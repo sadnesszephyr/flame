@@ -25,7 +25,8 @@ const config = {
 				}
 			}
 		}
-	}
+	},
+	extensions: ['.svelte', '.svg']
 }
 
 export default config

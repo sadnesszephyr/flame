@@ -17,6 +17,8 @@ export async function POST(event: RequestEvent) {
 	const dataCheckString = v.map(([k, v]) => `${k}=${v}`).join('\n')
 	const secretKey = cryptoEs.SHA256(TELEGRAM_BOT_TOKEN)
 	const key = cryptoEs.HmacSHA256(dataCheckString, secretKey).toString(cryptoEs.enc.Hex)
+	console.log(key)
+	console.log(hash)
 
 	const isValid = key === hash
 
