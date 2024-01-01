@@ -2,11 +2,14 @@
 	import * as sprites from './sprites'
 
 	const { id, size = 256 }: { id: string, size?: number | string } = $props()
+	const outlineEnabled = $state(false)
+
+	const Sprite = sprites[id as keyof typeof sprites]
 </script>
 
 {#if id in sprites}
 	<svg width={size} height={size} viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<svelte:component this={sprites[id as keyof typeof sprites]}/>
+		<Sprite/>
 	</svg>
 {:else}
 	<svg width={size} height={size} viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">

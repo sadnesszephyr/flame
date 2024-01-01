@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { dev } from '$app/environment'
-	import { goto, onNavigate } from '$app/navigation'
+	import { beforeNavigate, goto, onNavigate } from '$app/navigation'
 	import { base } from '$app/paths'
 	import { page } from '$app/stores'
 	import { appManager } from '$lib/AppManager'
