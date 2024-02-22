@@ -1,4 +1,9 @@
-const downEvents = ['pointerdown']
+import type { Action } from 'svelte/action'
+
+const downEvents = [
+	'pointerdown',
+	'touchstart'
+] as const
 const upEvents = [
 	'pointerup',
 	'mouseleave',
@@ -6,37 +11,58 @@ const upEvents = [
 	'toucmmove',
 	'touchend',
 	'touchcancel'
-]
+] as const
 
-export function ripple(element: HTMLElement) {
+export const ripple: Action = (element: HTMLElement) => {
 	if (!element.classList.contains('with-ripple')) {
 		element.classList.add('with-ripple');
 	}
 	
 	downEvents.forEach((event) => {
-		element.addEventListener(event, (e) => {
-			// e.preventDefault()
-			createRipple(e as PointerEvent, element)
-		})
+		element.addEventListener(event, createRipple)
 	});
+
+	return {
+		destroy() {
+			downEvents.forEach((event) => {
+				element.removeEventListener(event, createRipple)
+			})
+		},
+	}
 }
 
 
-function createRipple(event: PointerEvent, parentElement: HTMLElement) {
+function createRipple(event: PointerEvent | TouchEvent) {
+	const parentElement = event.currentTarget
+
+	if(!(parentElement instanceof HTMLElement)) return
+
+	for (const child of parentElement.children) {
+		const { classList } = child
+		if (classList.contains('ripple') && !classList.contains('fade')) return
+	}
+
+	let clientX = event instanceof TouchEvent
+		? event.touches[0].clientX
+		: event.clientX
+	let clientY = event instanceof TouchEvent
+		? event.touches[0].clientY
+		: event.clientY
+
 	const rect = parentElement.getBoundingClientRect()
 	const radius = findDistanceToFurthestPoint(
 		rect.width,
 		rect.height,
-		event.clientX - rect.left,
-		event.clientY - rect.top
+		clientX - rect.left,
+		clientY - rect.top
 	)
 
 	const rippleElement = document.createElement('span')
 	rippleElement.classList.add('ripple')
 
 	const size = radius * 2
-	const left = event.clientX - rect.left
-	const top = event.clientY - rect.top
+	const left = clientX - rect.left
+	const top = clientY - rect.top
 
 	rippleElement.style.left = left + 'px'
 	rippleElement.style.top = top + 'px'
@@ -45,15 +71,27 @@ function createRipple(event: PointerEvent, parentElement: HTMLElement) {
 
 	parentElement.appendChild(rippleElement)
 
-	upEvents.forEach((e) => {
-		parentElement.addEventListener(e, () => {
-			rippleElement.style.opacity = '0'
-
-			setTimeout(() => rippleElement.remove(), 1000)
+	upEvents.forEach((eventName) => {
+		document.addEventListener(eventName, (e) => {
+			console.log(eventName)
+			removeRipple(rippleElement)
+		}, {
+			once: true
 		})
 	})
 }
 
+function removeRipple(rippleElement: HTMLElement) {
+	console.log(rippleElement)
+	if (rippleElement === null) return
+
+	rippleElement.classList.add('fade')
+	rippleElement.style.opacity = '0'
+
+	rippleElement.addEventListener('transitionend', () => {
+		rippleElement.remove()
+	}, { once: true })
+}
 
 function findDistanceToFurthestPoint(
 	elementWidth: number,

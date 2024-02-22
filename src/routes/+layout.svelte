@@ -5,6 +5,7 @@
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player'
 	import '../styles/global.scss'
 	import { fade } from 'svelte/transition'
+	import NavigationBar from '$lib/client/components/NavigationBar.svelte'
 
 	const isOpenedFromTelegram = Boolean(window.Telegram.WebView.initParams.tgWebAppThemeParams)
 	let userDataLoaded = false
@@ -26,6 +27,8 @@
 	window.Telegram.WebApp.onEvent('themeChanged', () => {
 		theme = window.Telegram.WebApp.colorScheme
 	})
+
+	window.Telegram.WebApp.SettingsButton.show()
 </script>
 
 {#if isOpenedFromTelegram}
@@ -40,6 +43,7 @@
 	<main>
 		<slot />
 	</main>
+	<NavigationBar/>
 {:else}
 	<div class="error">
 		<LottiePlayer src="/animations/flame/no.json" autoplay loop width={192} />

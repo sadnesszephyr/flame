@@ -2,7 +2,7 @@
 	import { ripple } from '$lib/client/actions/ripple'
 	import { t } from '$lib/shared/localization'
 	import { userData } from '$lib/client/store'
-	import { fetchData } from '../lib/client/fetchData'
+	import { fetchData } from '$lib/client/fetchData'
 
 	window.Telegram.WebApp.BackButton.hide()
 	window.Telegram.WebApp.MainButton.hide()

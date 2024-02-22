@@ -1,4 +1,4 @@
-import { error, type Handle, type HandleFetch } from '@sveltejs/kit'
+import { error, type Handle } from '@sveltejs/kit'
 import cryptoEs from 'crypto-es'
 import { database } from './lib/server/database'
 import { getT } from './lib/shared/localization'

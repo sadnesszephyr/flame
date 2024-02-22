@@ -37,7 +37,7 @@
 		height: 1.25rem;
 		position: absolute;
 		border-radius: 50%;
-		background: white;
+		background: var(--background);
 		border: 0.125rem solid var(--text);
 		transition: 0.2s;
 	}

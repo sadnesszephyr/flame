@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import Button from '$lib/client/components/Button.svelte'
+
 	import { ripple } from '$lib/client/actions/ripple'
 	import { fetchData } from '$lib/client/fetchData'
 	import { clientLanguage, t, userLanguage } from '$lib/shared/localization'
@@ -8,6 +8,7 @@
 	import { items, type Item } from '$lib/shared/items'
 	import Await from '$lib/client/components/Await.svelte'
 	import { fade } from 'svelte/transition'
+	import Button from "$lib/client/components/Button.svelte";
 
 	const webApp = window.Telegram.WebApp
 	webApp.expand()

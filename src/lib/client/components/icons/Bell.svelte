@@ -3,4 +3,3 @@
 	<ellipse cx="12" cy="4" rx="1.5" ry="1.5" transform="rotate(-180 12 4)" fill="currentColor"/>
 	<path d="M12 4.75C8.82437 4.75 6.25 7.32436 6.25 10.5V16L4.5 17.75H19.5L17.75 16V10.5C17.75 7.32436 15.1756 4.75 12 4.75Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
 </svg>
-	

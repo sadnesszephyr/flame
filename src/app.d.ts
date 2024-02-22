@@ -77,6 +77,13 @@ declare global {
 					text: string,
 					textColor: string,
 				},
+				SettingsButton: {
+					isVisible: boolean,
+					onClick(callback: Function): unknown
+					offClick(callback: Function): unknown
+					show(): unknown
+					hide(): unknown
+				}
 				backgroundColor: string,
 				close(): unknown,
 				closeScanQrPopup(): unknown,

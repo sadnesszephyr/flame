@@ -16,7 +16,8 @@
 		xp: 0,
 		lastTimeFished: null,
 		username: '',
-		profilePhoto: ''
+		profilePhoto: '',
+		lastDailyBonus: new Date()
 	}
 
 	const xpProgress = tweened(0, {
@@ -63,6 +64,9 @@
 			{Math.round($orbsDisplayValue)}
 			<img draggable="false" class="currency-icon" src="/icons/orb.webp" alt="orbs"/>
 		</span>
+		<a href="/inventory" use:ripple class="inventory-button">
+			<img draggable="false" class="currency-icon" src="https://em-content.zobj.net/source/facebook/355/backpack_1f392.png" alt="coins"/>
+		</a>
 	</div>
 	{#if $activeRequests.length}
 		<div class="loading-indicator"/>
@@ -75,7 +79,7 @@
 	box-shadow: 
 		0 0.5px 0 0 rgba(0, 0, 0, 0.07),
 		0 calc(-1 * var(--border-width)) 0 0 var(--border-color) inset;
-	padding: 0 1rem 0 0.5rem;
+	padding: 0 0.5rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -114,7 +118,7 @@
 
 .wallet {
 	display: flex;
-	gap: 1.5rem;
+	gap: 1rem;
 	font-weight: 500;
 }
 
@@ -124,7 +128,7 @@
 	font-weight: 500;
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
+	gap: 0.25rem;
 }
 
 .currency-icon {
@@ -134,6 +138,15 @@
 
 .negative {
 	color: var(--danger);
+}
+
+.inventory-button {
+	aspect-ratio: 1/1;
+	height: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 0.25rem;
 }
 
 
