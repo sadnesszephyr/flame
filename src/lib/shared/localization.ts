@@ -5,7 +5,7 @@ import ruLocales from '../../locales/ru.json'
 export type tFunction = (key: string, parameters?: Record<string, unknown>) => string
 
 export const userLanguage = typeof window !== 'undefined'
-	? window?.Telegram.WebApp.initDataUnsafe.user.language_code
+	? window?.Telegram.WebApp.initDataUnsafe.user?.language_code
 	: undefined
 
 export const clientLanguage = writable(userLanguage ?? 'en')

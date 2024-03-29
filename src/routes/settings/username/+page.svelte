@@ -55,8 +55,8 @@
 	<span class="block-header">Set username</span>
 	<label class="input-wrapper">
 		@
-		<input placeholder="username" class="text-input" on:input={(e) => {
-			if(!usernameSchema.safeParse({username: e.currentTarget.value }).success) return
+		<input placeholder="username" class="text-input" maxlength="32" on:input={(e) => {
+			if(!usernameParsedSchema.success) return
 
 			availabilityPromise = checkUsernameAvailability(e)
 		}} bind:value={usernameValue}/>
@@ -117,6 +117,7 @@
 		line-height: 120%;
 		font-weight: 400;
 		padding: 0;
+		width: 100%;
 	}
 
 	.hint {

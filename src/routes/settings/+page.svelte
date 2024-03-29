@@ -31,6 +31,13 @@
 		</div>
 		<Toggle id="cozyMode" bind:checked={$localSettings.cozyMode}/>
 	</label>
+	<label for="powerSaving" class="cell" use:ripple>
+		<div class="cell-text">
+			<span class="cell-name">Power saving</span>
+			<span class="cell-description">Disable animations</span>
+		</div>
+		<Toggle id="powerSaving" bind:checked={$localSettings.powerSaving}/>
+	</label>
 </div>
 
 <style lang="scss">

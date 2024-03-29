@@ -7,15 +7,17 @@ export const userData = writable<User>(undefined)
 
 interface LocalSettings {
 	contrastMode: boolean,
-	cozyMode: boolean
+	cozyMode: boolean,
+	powerSaving: boolean
 }
 
 let localSettingsInitialValue: LocalSettings = localStorage.getItem('localSettings')
 	? JSON.parse(localStorage.getItem('localSettings')!)
 	: {
 		contrastMode: false,
-		cozyMode: false
-	}
+		cozyMode: false,
+		powerSaving: false
+	} satisfies LocalSettings
 
 export const localSettings = writable<LocalSettings>(localSettingsInitialValue)
 

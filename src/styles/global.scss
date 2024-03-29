@@ -50,6 +50,7 @@ main {
 	// Viewport height minus header height
 	height: calc(var(--tg-viewport-height) - 8rem);
 	width: 100%;
+	view-transition-name: main;
 }
 
 pre, code {
@@ -128,4 +129,19 @@ h1, h2, h3, h4, h5, h6, p {
 	100% {
 		background: var(--background);
 	}
+}
+
+
+::view-transition-old(main),
+::view-transition-new(main) {
+  	animation-duration: 0.2s;
+}
+
+::view-transition-new(main) {
+	animation-delay: 0.2s;
+}
+
+::view-transition-old(navigation-bar),
+::view-transition-new(navigation-bar) {
+	animation: none;
 }

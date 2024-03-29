@@ -1,9 +1,12 @@
 <script lang="ts">
-	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player'
+	import Animation from '$lib/client/components/Animation.svelte'
+	import tentAnimation from '$lib/client/animations/tent.json'
 </script>
 
 <div class="wrapper">
-	<LottiePlayer src="/animations/tent.json" autoplay width={192} />
+	<Animation
+		src={tentAnimation}
+	/>
 	<h1 class="heading">Лагеря пока в разработке</h1>
 	<p>Ты сможешь объединяться с другими игроками в лагеря, развиваться, помогать друг другу и соперничать с другими лагерями.</p>
 </div>

@@ -47,6 +47,7 @@
 		background: var(--background);
 		display: flex;
 		height: 5rem;
+		view-transition-name: navigation-bar;
 		
 		@media screen and (max-height: 590px) {
 			height: 3rem;
@@ -62,6 +63,7 @@
 		text-decoration: none;
 		gap: 0.25rem;
 		transition: 0.2s;
+		// view-transition-name: navigation-bar-segment;
 
 		&.active {
 			.icon-container {
@@ -84,12 +86,16 @@
 	.icon-container {
 		width: 2rem;
 		height: 2rem;
-		transition: 0.1s;
 		border-radius: 1rem;
 		color: var(--text);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
+		:global(svg) {
+			transition: 0.2s;
+			fill: transparent;
+		}
 	}
 
 	.segment-label {

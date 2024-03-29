@@ -7,8 +7,8 @@
 	import Drawer from '$lib/client/components/Drawer.svelte'
 	import { items, type Item } from '$lib/shared/items'
 	import Await from '$lib/client/components/Await.svelte'
-	import { fade } from 'svelte/transition'
-	import Button from "$lib/client/components/Button.svelte";
+	import type { PageData } from './$types'
+	import Button from "$lib/client/components/Button.svelte"
 
 	const webApp = window.Telegram.WebApp
 	webApp.expand()
