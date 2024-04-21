@@ -37,6 +37,7 @@
 	"dependencies": {
 		"@lottiefiles/svelte-lottie-player": "^0.3.0",
 		"@prisma/client": "4.15.0",
+		"catenary-curve": "^2.0.1",
 		"crypto-es": "^2.0.4",
 		"prisma": "^5.3.1",
 		"telescript": "^0.1.0",

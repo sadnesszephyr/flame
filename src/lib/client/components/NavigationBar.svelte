@@ -41,13 +41,13 @@
 
 <style lang="scss">
 	.navigation-bar {
-		position: fixed;
-		bottom: 0;
 		width: 100%;
 		background: var(--background);
 		display: flex;
 		height: 5rem;
 		view-transition-name: navigation-bar;
+		box-shadow: 
+			0 var(--border-width) 0 0 var(--border-color) inset;
 		
 		@media screen and (max-height: 590px) {
 			height: 3rem;
@@ -63,7 +63,6 @@
 		text-decoration: none;
 		gap: 0.25rem;
 		transition: 0.2s;
-		// view-transition-name: navigation-bar-segment;
 
 		&.active {
 			.icon-container {

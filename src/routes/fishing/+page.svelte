@@ -1,13 +1,70 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
-	import Button from '$lib/client/components/Button.svelte'
-	import { fetchData } from '$lib/client/fetchData'
-	import type { FishDrop } from '$lib/fishDrop'
-	import { fly } from 'svelte/transition'
-	import { flyIntoInventory } from '$lib/client/transitions'
-	import { userData } from '$lib/client/store'
-	import type { User } from '@prisma/client'
-	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player'
+	import { drawResult, getCatenaryCurve, type CatenaryCurveQuadraticResult } from 'catenary-curve'
+
+	let canvas: HTMLCanvasElement
+	let context: CanvasRenderingContext2D
+	let touchX: number
+	let touchY: number
+	let fishX: number
+	let fishY: number
+	let waterElement: HTMLDivElement
+	let mousePressed: boolean = false
+
+	function drawRope(): void {
+		if(!context) return
+		context.clearRect(0, 0, canvas.width, canvas.height)
+
+		context.beginPath()
+		context.lineWidth = 2
+		context.strokeStyle = '#d3dbe3'
+	
+		const result = getCatenaryCurve({
+			x: touchX,
+			y: touchY
+		}, {
+			x: fishX,
+			y: fishY
+		}, 250)
+		drawResult(result, context)
+
+		context.stroke()
+	}
+
+	function onMouseMove(e: MouseEvent) {
+		if(!mousePressed) return
+		touchX = e.clientX
+		touchY = e.clientY - waterElement.getBoundingClientRect().y
+
+		drawRope()
+	}
+
+	function average(array: number[]) {
+		return array.reduce((a, b) => a + b, 0) / array.length
+	}
+
+	function onTouchMove(e: TouchEvent) {
+		const touches = Array.from(e.touches)
+		touchX = average(touches.map((t) => t.clientX))
+		touchY = average(touches.map((t) => t.clientY))
+			- waterElement.getBoundingClientRect().y
+		
+		drawRope()
+	}
+
+	function resizeCanvas() {
+		canvas.width = canvas.parentElement!.clientWidth
+		canvas.height = canvas.parentElement!.clientHeight
+	}
+
+	onMount(async () => {
+		resizeCanvas()
+		context = canvas.getContext('2d')!
+		
+		fishX = canvas.width / 2
+		fishY = canvas.height / 2
+	})
 
 	const webApp = window.Telegram.WebApp
 
@@ -16,166 +73,79 @@
 	webApp.BackButton.onClick(() => goto('/'))
 	webApp.MainButton.hide()
 
-	let currentDrop: FishDrop | null = null
+	// let currentDrop: FishDrop | null = null
 
-	let myData: User | undefined = undefined
-	let fishingState: 'timeout' | 'idle' | 'waiting' | 'biting' | 'caught' | 'missed' = 'timeout'
-	let timeout: NodeJS.Timeout
-	let catchButtonPressed = false
+	// let myData: User | undefined = undefined
+	// let fishingState: 'timeout' | 'idle' | 'waiting' | 'biting' | 'caught' | 'missed' = 'timeout'
+	// let timeout: NodeJS.Timeout
+	// let catchButtonPressed = false
 
-	$: if (myData) {
-		console.log(myData)
-		const timeUntilCanFish = new Date(myData.lastTimeFished ?? 0).getTime() + 30_000 - new Date().getTime()
-		setTimeout(
-			() => {
-				fishingState = 'idle'
-			},
-			timeUntilCanFish > 0 ? timeUntilCanFish : 0
-		)
-	}
+	// $: if (myData) {
+	// 	console.log(myData)
+	// 	const timeUntilCanFish = new Date(myData.lastTimeFished ?? 0).getTime() + 30_000 - new Date().getTime()
+	// 	setTimeout(
+	// 		() => {
+	// 			fishingState = 'idle'
+	// 		},
+	// 		timeUntilCanFish > 0 ? timeUntilCanFish : 0
+	// 	)
+	// }
 
-	function caughtItemTransition(node: HTMLElement) {
-		if (currentDrop?.isJunk) {
-			return fly(node, { y: 64 })
-		}
-		return flyIntoInventory(node, { duration: 750 })
-	}
-
-	userData.subscribe((data) => {
-		if (!data) return
-		myData = data
-	})
+	// function caughtItemTransition(node: HTMLElement) {
+	// 	if (currentDrop?.isJunk) {
+	// 		return fly(node, { y: 64 })
+	// 	}
+	// 	return flyIntoInventory(node, { duration: 750 })
+	// }
 </script>
 
-{#if fishingState === 'caught' && currentDrop}
-	<button
-		on:click={() => {
-			fishingState = 'timeout'
-			clearTimeout(timeout)
-		}}
-		class="drop"
-		in:fly={{ y: -32 }}
-		out:caughtItemTransition
-	>
-		{#if !currentDrop?.isJunk}
-			<img class="shine" src="shine.webp" alt="" />
-		{/if}
-		<img src={`items/${currentDrop.itemId}.webp`} alt={currentDrop.itemId} width="160" loading="lazy" />
-	</button>
-{/if}
-
-{#if fishingState === 'idle'}
-	<div class="fishing-action">
-		<Button
-			variant="secondary"
-			on:click={() => {
-				fishingState = 'waiting'
-				clearTimeout(timeout)
-				timeout = setTimeout(() => {
-					fishingState = 'biting'
-
-					timeout = setTimeout(() => {
-						fishingState = 'missed'
-
-						timeout = setTimeout(() => {
-							fishingState = 'timeout'
-
-							timeout = setTimeout(() => {
-								fishingState = 'idle'
-							}, 30_000)
-						}, 5_000)
-					}, 5_000)
-				}, 15_000 + Math.random() * 30_000)
-			}}
-		>
-			Закинуть удочку
-		</Button>
-	</div>
-{:else if fishingState === 'biting'}
-	<div class="fishing-action">
-		<Button
-			variant="primary"
-			disabled={catchButtonPressed}
-			on:click={async () => {
-				catchButtonPressed = true
-				currentDrop = await fetchData('catchFish')
-				fishingState = 'caught'
-				clearTimeout(timeout)
-				timeout = setTimeout(() => {
-					fishingState = 'timeout'
-					catchButtonPressed = false
-					timeout = setTimeout(() => {
-						fishingState = 'idle'
-					}, 30_000)
-				}, 5_000)
-			}}
-		>
-			Поймать
-		</Button>
-	</div>
-{:else if fishingState === 'timeout'}
-	<div class="animation">
-		<LottiePlayer src="/animations/hourglass.json" loop autoplay width={192} />
-	</div>
-	<div class="fishing-action">Рыбы немного испугались, ждём, когда приплывут назад</div>
-{:else if fishingState === 'waiting'}
-	<div class="animation">
-		<LottiePlayer src="/animations/hourglass.json" loop autoplay width={192} />
-	</div>
-	<div class="fishing-action">Ждём, когда клюнет</div>
-{:else if fishingState === 'missed'}
-	<div class="animation">
-		<LottiePlayer src="/animations/rainCloud.json" loop autoplay width={192} />
-	</div>
-	<div class="fishing-action">Рыба сбежала</div>
-{/if}
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div
+	bind:this={waterElement}
+	class="water"
+	on:touchmove={onTouchMove}
+	on:mousemove={onMouseMove}
+	on:mousedown={() => (mousePressed = true)}
+	on:mouseup={() => (mousePressed = false)}
+>
+	<canvas class="canvas" bind:this={canvas} />
+	<svg class="bobber" style:left={fishX + 'px'} style:top={fishY + 'px'} width="36" height="18" viewBox="0 0 36 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<ellipse cx="18.5" cy="9" rx="6.5" ry="4" fill="white"/>
+		<path d="M5 7C5 5 8 1 12 1" stroke="white" stroke-width="2" stroke-linecap="round"/>
+		<path d="M1 5C1 6 1.00015 8 1.99998 9M21 17C24.0001 17 29.0001 16 29.0001 11M35 13C35 14 35 15 34 16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+	</svg>
+</div>
 
 <style lang="scss">
-	.drop {
-		position: absolute;
-		right: 50%;
-		top: 50%;
-		translate: 50% -50%;
-		transition: none;
-		background: none;
-		border: none;
-		transition: 0.5s ease-in;
-	}
-
-	.fishing-action {
-		position: absolute;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
+	.water {
+		height: 100%;
 		width: 100%;
-		left: 0;
-		bottom: 0;
-		align-items: stretch;
-		justify-content: center;
-		text-align: center;
+		background: url('/images/water.webp');
+		background-size: 16rem 16rem;
+		animation: 120s linear water-flow infinite;
+		position: relative;
 	}
 
-	.animation {
+	.canvas {
 		position: absolute;
-		left: 50%;
-		top: 50%;
+		inset: 0;
+		z-index: 10;
+	}
+
+	.bobber {
+		position: absolute;
 		translate: -50% -50%;
+		opacity: 50%;
 	}
 
-	.shine {
-		position: absolute;
-		left: calc(50% - 8rem);
-		top: calc(50% - 8rem);
-		z-index: -1;
-		animation: rotate 8s linear infinite;
-	}
-
-	@keyframes rotate {
+	@keyframes water-flow {
 		from {
-			rotate: 0deg;
+			background-position: 0 0;
 		}
+
 		to {
-			rotate: 360deg;
+			background-position: 32rem 16rem;
 		}
 	}
 </style>
