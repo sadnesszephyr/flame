@@ -43,6 +43,7 @@
 		gap: 0.5ch;
 		flex-shrink: 0;
 		text-wrap: nowrap;
+		text-decoration: none;
 		--ripple-color: rgba(0, 0, 0, 0.2);
 
 		&:disabled {
@@ -59,11 +60,18 @@
 		color: var(--foreground);
 	}
 
+	.link {
+		background: transparent;
+		color: var(--link);
+		--ripple-color: color-mix(in srgb, var(--link) 20%, transparent)
+	}
+
 
 	// Sizes
 	
 	.small {
 		height: 2rem;
+		padding: 0 1rem;
 	}
 
 

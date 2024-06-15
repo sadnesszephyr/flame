@@ -1,20 +1,30 @@
 <script lang="ts">
 	import Header from '$lib/client/components/Header.svelte'
-	import { fetchData } from '$lib/client/fetchData'
+	import { request } from '$lib/client/request'
 	import { userData } from '$lib/client/store'
 	import '../styles/global.scss'
 	import { fade } from 'svelte/transition'
 	import NavigationBar from '$lib/client/components/NavigationBar.svelte'
-	import { onNavigate } from '$app/navigation'
+	import { goto, beforeNavigate, onNavigate } from '$app/navigation'
+	import Button from '$lib/client/components/Button.svelte'
+	import { dev } from '$app/environment'
+	import { base } from '$app/paths'
+	import Snackbars from '$lib/client/components/Snackbar/Snackbars.svelte'
 
 	let userDataLoaded = false
+
+	if (!window.localStorage.getItem('token') && !window.Telegram.WebApp.initData) {
+		goto('/welcome', {
+			replaceState: true
+		})
+	}
 	
-	fetchData('getMe').then((data) => {
+	request('getMe').then((data) => {
 		userData.set(data)
 		userDataLoaded = true
 	})
 
-	fetchData('updateProfilePhoto')
+	// request('updateProfilePhoto')
 	
 	let theme = window.Telegram.WebApp.colorScheme
 	$: {
@@ -29,10 +39,11 @@
 
 	window.Telegram.WebApp.SettingsButton.show()
 
+	document.body.classList.toggle('ios', ['macos', 'ios'].includes(window.Telegram.WebApp.platform))
+
 	onNavigate((navigation) => {
 		if(!document.startViewTransition) return
 		
-
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {
 				resolve()
@@ -42,18 +53,34 @@
 	})
 </script>
 
-{#if !userDataLoaded}
-	<div class="loader" out:fade>
-		<svg width="96" height="119" viewBox="0 0 64 79" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M64 49.9692C64 61.7846 59.0769 78.7692 32 78.7692C4.92308 78.7692 0 61.7846 0 49.9692C0 39.3846 5.88719 36.4308 6.15386 26.8308C6.30423 21.4175 4.92309 19.6923 4.92309 18.7077C4.92309 17.7231 5.4154 17.2308 6.40001 17.2308C10.5846 17.2308 16.7385 23.6308 18.7077 26.8308C28.5538 14.5231 27.0769 4.92308 27.0769 1.47692C27.0769 0.984615 27.0769 0 28.0615 0C33.9692 0 48.4923 16.9846 50.7077 31.2615C53.9077 29.2923 56.1231 24.6154 57.6 24.6154C60.1938 24.6154 64 38.1538 64 49.9692Z"/>
-		</svg>
-	</div>
+<svelte:head>
+	{#if dev}
+		<link rel="manifest" href={`${base}/site-dev.webmanifest`}>
+	{:else}
+		<link rel="manifest" href={`${base}/site.webmanifest`}>
+	{/if}
+</svelte:head>
+
+{#if window.Telegram.WebApp.initData}
+	{#if !userDataLoaded}
+		<div class="loader" out:fade>
+			<svg width="96" height="119" viewBox="0 0 64 79" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M64 49.9692C64 61.7846 59.0769 78.7692 32 78.7692C4.92308 78.7692 0 61.7846 0 49.9692C0 39.3846 5.88719 36.4308 6.15386 26.8308C6.30423 21.4175 4.92309 19.6923 4.92309 18.7077C4.92309 17.7231 5.4154 17.2308 6.40001 17.2308C10.5846 17.2308 16.7385 23.6308 18.7077 26.8308C28.5538 14.5231 27.0769 4.92308 27.0769 1.47692C27.0769 0.984615 27.0769 0 28.0615 0C33.9692 0 48.4923 16.9846 50.7077 31.2615C53.9077 29.2923 56.1231 24.6154 57.6 24.6154C60.1938 24.6154 64 38.1538 64 49.9692Z"/>
+			</svg>
+		</div>
+	{/if}
+	<Header />
+	<main>
+		<slot />
+	</main>
+	<NavigationBar/>
+{:else}
+	<main>
+		<slot />
+	</main>
+	<NavigationBar/>
 {/if}
-<Header />
-<main>
-	<slot />
-</main>
-<NavigationBar/>
+<Snackbars/>
 
 <style lang="scss">
 	.loader {

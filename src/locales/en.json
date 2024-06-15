@@ -7,6 +7,12 @@
 			"tooFast": "You are fishing too fast!"
 		}
 	},
+	"settings": {
+		"contrastMode": {
+			"title": "Contrast mode",
+			"description": ""
+		}
+	},
 	"items": {
 		"crab": {
 			"name": "Crab",

@@ -2,7 +2,7 @@
 	import { ripple } from '$lib/client/actions/ripple'
 	import { t } from '$lib/shared/localization'
 	import { userData } from '$lib/client/store'
-	import { fetchData } from '$lib/client/fetchData'
+	import { request } from '$lib/client/request'
 
 	window.Telegram.WebApp.BackButton.hide()
 	window.Telegram.WebApp.MainButton.hide()
@@ -27,7 +27,7 @@
 	})
 
 	async function handleBonusCardClick() {
-		const data = await fetchData('collectDailyBonus')
+		const data = await request('collectDailyBonus')
 		window.Telegram.WebApp.showPopup({
 			message: data.collected
 				? $t('home.dailyBonusMessage.collected.text')

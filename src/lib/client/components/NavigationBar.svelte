@@ -18,10 +18,9 @@
 		label: 'Camp'
 	}, {
 		icon: 'avatar',
-		page: '/settings',
+		page: '/me',
 		label: 'Profile'
 	}]
-	console.log(window.location.pathname)
 </script>
 
 <div class="navigation-bar">

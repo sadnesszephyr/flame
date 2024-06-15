@@ -1,4 +1,5 @@
-import { Client, InlineKeyboardButton, InlineKeyboardMarkup } from 'telescript'
+import { database } from '$lib/server/database'
+import { Chat, Client, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode } from 'telescript'
 
 export const bot = new Client({
 	token: process.env.TELEGRAM_BOT_TOKEN
@@ -6,7 +7,7 @@ export const bot = new Client({
 
 export async function getUserProfilePhoto(userId: number) {
 	const { photos } = await bot.getUserProfilePhotos(userId, { limit: 1 })
-	if(!photos.length) return ''
+	if(!photos.length) return
 	const photo = photos[0][0]
 	const file = await bot.getFile(photo.fileId)
 
@@ -14,22 +15,63 @@ export async function getUserProfilePhoto(userId: number) {
 	const blob = await res.blob()
 	const buffer = await Buffer.from(await blob.arrayBuffer())
 
-	return buffer.toString('base64')
+	return buffer
 }
 
 bot.on('message', async (message) => {
-	if(message.text?.startsWith('/start')) {
-		await message.chat.sendSticker('CAACAgIAAxkBAAIGB2VG4pG-t0yX8PvBtOQTXPH-pl0nAAJCEAACM8UpSZAO1BGnKkqCMwQ')
-		await message.chat.sendMessage('Hi!', {
-			replyMarkup: new InlineKeyboardMarkup()
-				.setKeyboard([[
-					new InlineKeyboardButton({
-						text: 'Launch Campfire',
-						webApp: {
-							url: 'https://campfire.sadzep.me/'
-						}
-					})
-				]])
-		})
+	if (!message.text) return
+
+	if (message.text?.startsWith('/start')) {
+		const startParam = message.text.slice(7)
+
+		if(startParam === 'auth') {
+			const user = await database.user.findUnique({
+				where: {
+					id: message.sender!.id
+				}
+			})
+
+			if(!user) return
+
+			const sentMessage = await message.chat.sendMessage('You are trying to log into the standalone version. Do not share the link with anyone!', {
+				replyMarkup: new InlineKeyboardMarkup({
+					inlineKeyboard: [
+						[new InlineKeyboardButton({
+							text: 'Log in',
+							url: `${process.env.APP_BASE_URL}/auth?code=${user?.authCode}&user_id=${message.sender!.id}&message_id=${message.id + 1}`
+						})]
+					]
+				})
+			})
+		}
+
+		if(!startParam) {
+			await sendGreetingsMessage(message.chat)
+		}
 	}
 })
+
+async function sendGreetingsMessage(chat: Chat) {
+	await chat.sendSticker('CAACAgIAAxkBAAIGB2VG4pG-t0yX8PvBtOQTXPH-pl0nAAJCEAACM8UpSZAO1BGnKkqCMwQ')
+	await chat.sendMessage(`
+		Hi! Here you can try playing Campfire. Please note that it is still in development and there are hell lot of bugs and missing features.
+
+Anyway, I'm trying really hard to make it as fun and cool as possible. There are a lot of technical complications, so fun part developing is not as fast as I would like it to be. But still, I hope I will be able to build a cool and cozy experience for you, as I did before in Discord! 🧡
+	`, {
+		replyMarkup: new InlineKeyboardMarkup()
+			.setKeyboard([[
+				new InlineKeyboardButton({
+					text: 'Launch Campfire',
+					webApp: {
+						url: 'https://campfire.sadzep.me/'
+					}
+				})
+			]])
+	})
+}
+
+function getRandomInt(min: number, max: number) {
+	const minCeiled = Math.ceil(min);
+	const maxFloored = Math.floor(max);
+	return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+}

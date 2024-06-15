@@ -1,27 +1,27 @@
-abstract class Tag {}
+import type { Component } from './Component'
 
 interface ItemData {
 	id: string,
-	price?: number
+	price?: number,
+	components?: Component[]
 }
 
-export class Item {
+export abstract class Item {
 	id: string
 	price: number
-	tags: Tag[] = []
+	components: Component[] = []
 
 	constructor(data: ItemData) {
 		this.id = data.id
 		this.price = data.price ?? 0
+		this.components = data.components ?? []
 	}
-
 
 	get sellable() {
 		return this.price > 0
 	}
 
-
-	hasTag(tag: typeof Tag) {
-		return this.tags.some((t) => t instanceof tag)
+	hasComponent(tag: typeof Component) {
+		return this.components.some((t) => t instanceof tag)
 	}
 }

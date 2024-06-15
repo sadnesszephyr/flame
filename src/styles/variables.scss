@@ -4,7 +4,8 @@
 	--background: var(--tg-theme-bg-color, #FFFFFF);
 	--background-secondary: var(--tg-theme-secondary-bg-color, #F0F0F0);
 	--foreground: var(--tg-theme-text-color, #222222);
-	--text: var(--tg-theme-hint-color, #999999);
+	--text: var(--tg-theme-subtitle-text-color, #999999);
+	--section-header: var(--tg-theme-section-header-text-color, #2C94EC);
 	--accent: var(--tg-theme-accent-text-color, #50A8EB);
 	--accent-foreground: var(--tg-theme-button-text-color, #FFFFFF);
 	--link: var(--tg-theme-link-color, #3A95D5);

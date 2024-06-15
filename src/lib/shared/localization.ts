@@ -21,6 +21,7 @@ export function getT(language: string): tFunction {
 		for (let stringKey of stringPath) {
 			// If there's no string found return key as a fallback
 			if (!resultString[stringKey]) {
+				console.warn(`Couldn't find a translation for key '${key}'`)
 				return key
 			}
 			resultString = resultString[stringKey]

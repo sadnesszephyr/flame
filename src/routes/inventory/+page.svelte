@@ -2,13 +2,14 @@
 	import { goto } from '$app/navigation'
 
 	import { ripple } from '$lib/client/actions/ripple'
-	import { fetchData } from '$lib/client/fetchData'
+	import { request } from '$lib/client/request'
 	import { clientLanguage, t, userLanguage } from '$lib/shared/localization'
 	import Drawer from '$lib/client/components/Drawer.svelte'
 	import { items, type Item } from '$lib/shared/items'
 	import Await from '$lib/client/components/Await.svelte'
 	import type { PageData } from './$types'
-	import Button from "$lib/client/components/Button.svelte"
+	import Button from '$lib/client/components/Button.svelte'
+	import { onMount } from 'svelte'
 
 	const webApp = window.Telegram.WebApp
 	webApp.expand()
@@ -16,130 +17,44 @@
 	webApp.BackButton.onClick(() => goto('/'))
 	webApp.MainButton.hide()
 
-	let inventoryPromise = fetchData('getInventory')
-	let itemSelected: Item | null = null
-	let sellPageOpened: boolean = false
-	let sellQuantity = 1
+	let inventory: {
+		itemId: string
+		quantity: number
+	}[] = []
+	let loaded = false
 
-	$: {
-		if (!sellQuantity || sellQuantity < 1) sellQuantity = 1
-		sellQuantity = Math.floor(sellQuantity)
-	}
-
-	$: if(!sellPageOpened) {
-		sellQuantity = 1
-	}
-
-	async function sellItem(itemId: string, quantity: number) {
-		await fetchData('sellItem', { item: itemId, quantity })
-		inventoryPromise = fetchData('getInventory')
-	}
-
-	async function useItem(itemId: string) {
-		itemSelected = null
-		await fetchData(`useItem/${itemId}`)
-		inventoryPromise = fetchData('getInventory')
-	}
+	onMount(async () => {
+		inventory = await request('getInventory')
+		loaded = true
+	})
 </script>
 
 <div class="list">
 	<div class="item-list">
-		<Await promise={inventoryPromise} once>
-			<svelte:fragment slot="await">
-				{#each Array(6) as _}
-					<div class="item-skeleton" />
-				{/each}
-			</svelte:fragment>
-			<svelte:fragment slot="then" let:then={result}>
-				{#each result as item}
-					<button
-						class="item-card"
-						use:ripple
-						on:click={(e) => {
-							const itemData = items.get(item.itemId)
-							if (itemData) {
-								itemSelected = itemData
-							}
-						}}
-					>
-						<span class="item-image">
-							<img src={`/items/${item.itemId}.webp`} alt={item.id} />
+		{#if !loaded}
+			{#each Array(6) as _}
+				<div class="item-skeleton" />
+			{/each}
+		{:else}
+			{#each inventory as item}
+				<button class="item-card" use:ripple>
+					<span class="item-image-wrapper">
+						<img class="item-image" src={`/items/${item.itemId}.webp`} alt={item.itemId} />
+						{#if item.quantity !== 1}
 							<span class="item-quantity-badge">{item.quantity}</span>
-						</span>
-						<span>{$t(`items.${item.itemId}.name`)}</span>
-					</button>
-				{/each}
-				{#if itemSelected}
-					<Drawer
-						on:close={() => {
-							itemSelected = null
-							sellPageOpened = false
-						}}
-						isOpen={Boolean(itemSelected)}
-					>
-						{#if !sellPageOpened}
-							<div class="item-selected-info">
-								<span class="item-selected-image">
-									<img src={`/items/${itemSelected.id}.webp`} alt={itemSelected.id} />
-								</span>
-								<h2 class="item-selected-name">{$t(`items.${itemSelected.id}.name`)}</h2>
-								<p class="item-selected-description">{$t(`items.${itemSelected.id}.description`)}</p>
-							</div>
-
-							<div class="item-actions">
-								{#if itemSelected.sellable}
-									<Button
-										on:click={() => {
-											if (!itemSelected) return
-											sellPageOpened = true
-										}}
-										variant="secondary"
-									>
-										{$t('inventory.sell')}
-									</Button>
-								{/if}
-								{#if itemSelected.usable}
-									<Button
-										on:click={() => {
-											if (!itemSelected) return
-											useItem(itemSelected.id)
-										}}
-										variant="primary"
-									>
-										{$t('inventory.use')}
-									</Button>
-								{/if}
-							</div>
-						{:else}
-							<h2>{$t('inventory.sellItem')}</h2>
-							<div class="price-input">
-								<Button square on:click={() => (sellQuantity -= 1)}>–</Button>
-								<input type="number" min="1" max={255} bind:value={sellQuantity} />
-								<Button square on:click={() => (sellQuantity += 1)}>+</Button>
-							</div>
-							<div class="item-actions">
-								<Button on:click={() => sellPageOpened = false}>
-									{$t('inventory.back')}
-								</Button>
-								<Button
-									variant="primary"
-									on:click={async () => {
-										if (!itemSelected) return
-										sellItem(itemSelected.id, sellQuantity)
-										sellPageOpened = false
-										itemSelected = null
-									}}
-								>
-									{$t('inventory.sellFor')}
-									{itemSelected.price * sellQuantity}
-									<img src="/icons/coin.webp" width={16} alt="coins" /></Button
-								>
-							</div>
 						{/if}
-					</Drawer>
-				{/if}
-			</svelte:fragment>
-		</Await>
+					</span>
+					<!-- <span>{$t(`items.${item.itemId}.name`)}</span> -->
+				</button>
+				<!-- <button
+					class="item-card"
+					use:ripple
+				>
+					<img class="item-image" src={`/items/${item.itemId}.webp`} alt={item.itemId} />
+					<span class="item-quantity-badge">{item.quantity}</span>
+				</button> -->
+			{/each}
+		{/if}
 	</div>
 </div>
 
@@ -148,7 +63,7 @@
 
 	.item-list {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 		padding: 1rem;
 		gap: 1rem;
 
@@ -169,16 +84,18 @@
 		align-items: center;
 		justify-content: center;
 		border: none;
+		position: relative;
+		// overflow: visible;
+		aspect-ratio: 1/1;
 	}
 
-	.item-image {
-		width: 4rem;
-		height: 4rem;
-		position: relative;
+	.item-image-wrapper {
+		pointer-events: none;
+		position: absolute;
 
-		img {
-			width: 100%;
-			height: 100%;
+		.item-image {
+			width: 4rem;
+			height: 4rem;
 		}
 	}
 

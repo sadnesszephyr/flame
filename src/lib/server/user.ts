@@ -1,5 +1,27 @@
+import type { Chat } from 'telescript'
 import { getXpForNextLevel } from '../shared/leveling'
 import { database } from './database'
+import type { User as DatabaseUser } from '@prisma/client'
+
+class User {
+	id: number
+
+	constructor(chatData: Chat, userData: DatabaseUser) {
+		this.id = chatData.id
+	}
+}
+
+async function createUser(chatData: Chat) {
+	const userData = await database.user.create({
+		data: {
+			id: chatData.id,
+			authCode: '123',
+			username: chatData.username ?? 'user' + chatData.id,
+		}
+	})
+
+	return new User(chatData, userData)
+}
 
 export async function giveUserXp(userId: number, xp: number) {
 	const user = await database.user.findUnique({

@@ -23,3 +23,9 @@
 	animation: skeleton-inversed 2s ease-in-out infinite;
 	border-radius: 0.5rem;
 }
+
+@mixin ios {
+	:global(body.ios) & {
+		@content;
+	}
+}

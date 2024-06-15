@@ -12,17 +12,20 @@ datasource db {
 }
 
 model User {
-    id              BigInt          @id
-    username        String          @unique
-    coins           Int             @default(100)
-    orbs            Int             @default(0)
-    xp              Int             @default(0)
-    level           Int             @default(0)
-    joined          DateTime        @default(now())
-    inventoryItems  InventoryItem[]
-    profilePhoto    String?
-    lastTimeFished  DateTime?
-	lastDailyBonus	DateTime?
+    id             BigInt          @id
+    username       String          @unique
+    coins          Int             @default(100)
+    rubies         Int             @default(0)
+    xp             Int             @default(0)
+    level          Int             @default(0)
+    joined         DateTime        @default(now())
+    inventoryItems InventoryItem[]
+    profilePhoto   String?
+    lastTimeFished DateTime?
+    lastDailyBonus DateTime?
+    authCode       String
+    authTokens     AuthToken[]
+    notifications  Notification[]
 }
 
 model InventoryItem {
@@ -32,4 +35,19 @@ model InventoryItem {
     quantity Int
 
     @@id([userId, itemId])
+}
+
+model AuthToken {
+    id       Int     @id @default(autoincrement())
+    token    String  @unique
+    user     User    @relation(fields: [userId], references: [id])
+    userId   BigInt
+    platform String?
+}
+
+model Notification {
+    id     Int    @id @default(autoincrement())
+    user   User   @relation(fields: [userId], references: [id])
+    userId BigInt
+    type   String 
 }

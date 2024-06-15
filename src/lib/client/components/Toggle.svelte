@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let checked = false
-	export let id: string
+	export let id: string | undefined = undefined
 </script>
 
 <span class="toggle" class:checked>

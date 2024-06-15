@@ -5,7 +5,7 @@ import { bot } from '$lib/server/bot'
 export async function POST(event: RequestEvent) {
 	let items = await database.inventoryItem.findMany({
 		where: {
-			userId: event.locals.initData.user.id
+			userId: event.locals.user.id
 		},
 		select: {
 			itemId: true,

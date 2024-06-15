@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fetchData } from '$lib/client/fetchData'
+	import { request } from '$lib/client/request'
 	import Await from '$lib/client/components/Await.svelte'
 	import { userData } from '$lib/client/store'
 	import { ripple } from '$lib/client/actions'
@@ -12,7 +12,7 @@
 	webApp.BackButton.onClick(() => goto('/'))
 	webApp.MainButton.hide()
 
-	let topPromise = fetchData('top')
+	let topPromise = request('top')
 	let selectedTop = 'level'
 </script>
 

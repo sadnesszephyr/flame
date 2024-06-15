@@ -17,7 +17,8 @@
 		lastTimeFished: null,
 		username: '',
 		profilePhoto: '',
-		lastDailyBonus: new Date()
+		lastDailyBonus: new Date(),
+		authCode: ''
 	}
 
 	const xpProgress = tweened(0, {
@@ -56,14 +57,14 @@
 		</div>
 	</button>
 	<div class="wallet">
-		<span class="currency" class:negative={myData.coins < 0}>
+		<a href="/wallet" class="currency" use:ripple class:negative={myData.coins < 0}>
 			{Math.round($coinsDisplayValue)}
 			<img draggable="false" class="currency-icon" src="/icons/coin.webp" alt="coins"/>
-		</span>
-		<span class="currency" class:negative={myData.orbs < 0}>
+		</a>
+		<a href="/wallet" class="currency" use:ripple class:negative={myData.orbs < 0}>
 			{Math.round($orbsDisplayValue)}
 			<img draggable="false" class="currency-icon" src="/icons/orb.webp" alt="orbs"/>
-		</span>
+		</a>
 		<a href="/inventory" use:ripple class="inventory-button">
 			<img draggable="false" class="currency-icon" src="https://em-content.zobj.net/source/facebook/355/backpack_1f392.png" alt="coins"/>
 		</a>
@@ -131,6 +132,11 @@
 	display: flex;
 	align-items: center;
 	gap: 0.25rem;
+	text-decoration: none;
+	color: var(--foreground);
+	border-radius: 0.25rem;
+	margin: 0 -0.5rem;
+	padding: 0 0.5rem;
 }
 
 .currency-icon {
