@@ -12,7 +12,7 @@
 		id: BigInt(0),
 		joined: new Date(),
 		level: 0,
-		orbs: 0,
+		rubies: 0,
 		xp: 0,
 		lastTimeFished: null,
 		username: '',
@@ -38,7 +38,7 @@
 
 	$: xpProgress.set(myData?.xp ?? 0)
 	$: coinsDisplayValue.set(myData?.coins ?? 0)
-	$: orbsDisplayValue.set(myData?.orbs ?? 0)
+	$: orbsDisplayValue.set(myData?.rubies ?? 0)
 
 	userData.subscribe((data) => {
 		if(!data) return
@@ -61,7 +61,7 @@
 			{Math.round($coinsDisplayValue)}
 			<img draggable="false" class="currency-icon" src="/icons/coin.webp" alt="coins"/>
 		</a>
-		<a href="/wallet" class="currency" use:ripple class:negative={myData.orbs < 0}>
+		<a href="/wallet" class="currency" use:ripple class:negative={myData.rubies < 0}>
 			{Math.round($orbsDisplayValue)}
 			<img draggable="false" class="currency-icon" src="/icons/orb.webp" alt="orbs"/>
 		</a>

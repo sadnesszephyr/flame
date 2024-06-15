@@ -9,7 +9,7 @@ export async function POST(event: RequestEvent) {
 		select: {
 			username: true,
 			coins: true,
-			orbs: true,
+			rubies: true,
 			level: true,
 			xp: true,
 			lastTimeFished: true,

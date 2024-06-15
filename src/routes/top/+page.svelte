@@ -25,8 +25,8 @@
 			title: 'Coins',
 			value: 'coins'
 		}, {
-			title: 'Orbs',
-			value: 'orbs'
+			title: 'Rubies',
+			value: 'rubies'
 		}]}
 		bind:selected={selectedTop}
 	/>
@@ -62,8 +62,8 @@
 								{user.level}
 							{:else if selectedTop === 'coins'}
 								{user.coins} <img src="/icons/coin.webp" width={16} alt="coins"/>
-							{:else if selectedTop === 'orbs'}
-								{user.orbs} <img src="/icons/orb.webp" width={16} alt="orbs"/>
+							{:else if selectedTop === 'rubies'}
+								{user.rubies} <img src="/icons/orb.webp" width={16} alt="orbs"/>
 							{/if}
 						</span>
 						<div class="divider"/>

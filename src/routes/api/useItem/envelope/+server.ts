@@ -7,8 +7,8 @@ const possibleDrops = [
 	{ coins: 40 },
 	{ coins: 50 },
 	{ coins: 60 },
-	{ orbs: 2 },
-	{ orbs: 5 }
+	{ rubies: 2 },
+	{ rubies: 5 }
 ]
 
 export async function POST(event: RequestEvent) {
@@ -42,8 +42,8 @@ export async function POST(event: RequestEvent) {
 			coins: {
 				increment: drop.coins ?? 0
 			},
-			orbs: {
-				increment: drop.orbs ?? 0
+			rubies: {
+				increment: drop.rubies ?? 0
 			}
 		},
 		where: {
@@ -54,7 +54,7 @@ export async function POST(event: RequestEvent) {
     return json({
 		_updates: {
 			coins: updatedUser.coins,
-			orbs: updatedUser.orbs
+			rubies: updatedUser.rubies
 		}
 	})
 }
