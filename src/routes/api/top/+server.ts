@@ -10,7 +10,7 @@ export async function POST(event: RequestEvent) {
 			xp: 'desc'
 		}]),
 		getTopByFilter({ coins: 'desc' }),
-		getTopByFilter({ rubiesTop: 'desc' })
+		getTopByFilter({ rubies: 'desc' })
 	])
 
 	return json({
