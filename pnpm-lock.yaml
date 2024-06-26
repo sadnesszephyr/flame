@@ -17,6 +17,9 @@ devDependencies:
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.0
     version: 3.1.1(svelte@5.0.0-next.166)(vite@5.3.1)
+  '@twa-dev/types':
+    specifier: ^7.0.0
+    version: 7.0.0
   '@types/eslint':
     specifier: ^8.56.7
     version: 8.56.10
@@ -666,6 +669,10 @@ packages:
       vitefu: 0.2.5(vite@5.3.1)
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@twa-dev/types@7.0.0:
+    resolution: {integrity: sha512-LBnMklxORuXd/ypv9gFKcQVNJkCktkeuU+2V6B5Ww7dcxDCoYBAKkNnIwEQ3cShq+cxTi96jC/CqWhgDMQ7AXQ==}
     dev: true
 
   /@types/cookie@0.6.0:
