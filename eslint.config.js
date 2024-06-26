@@ -137,7 +137,6 @@ export default [
 				]
 			}],
 			'@stylistic/multiline-ternary': ['error', 'always-multiline'],
-			'@stylistic/newline-per-chained-call': 'error',
 			'@stylistic/object-curly-newline': ['error', {
 				consistent: true
 			}],
