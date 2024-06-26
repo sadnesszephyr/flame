@@ -1,30 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet" />
-		<script src="https://telegram.org/js/telegram-web-app.js"></script>
-		<link rel="apple-touch-icon" sizes="180x180" href="%sveltekit.assets%/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="%sveltekit.assets%/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="%sveltekit.assets%/favicon-16x16.png">
-		<!-- Manifest link is locted in root layout file -->
-		<link rel="mask-icon" href="%sveltekit.assets%/safari-pinned-tab.svg" color="#fe7522">
-		<meta name="apple-mobile-web-app-title" content="Campfire">
-		<meta name="application-name" content="Campfire">
-		<meta name="msapplication-TileColor" content="#da532c">
-		<meta name="theme-color" content="#FFFFFF">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%sveltekit.head%
-		<script>
-			window.Telegram.WebApp.ready()
-		</script>
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<!-- <div> -->
-			%sveltekit.body%
-		<!-- </div> -->
+		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>

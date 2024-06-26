@@ -1,39 +1,38 @@
-<p align="center">
-    <img src="https://i.imgur.com/DnudRMs.png" alt="Campfire Logo" width="128" height="128">
-    <h1 align="center">Campfire <img alt="license" src="https://img.shields.io/badge/BETA-F16E14?style=flat-square"></h1>
-</p>
+# create-svelte
 
-<p align="center">
-	<a aria-label="License" href="https://github.com/sadnesszephyr/campfire/blob/main/LICENSE">
-		<img alt="license" src="https://img.shields.io/github/license/sadnesszephyr/campfire?style=flat-square&labelColor=1A1A1A">
-	</a>
-</p>
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-**Campfire** is a UI-game in Telegram based on [Mini Apps](https://core.telegram.org/bots/webapps) (Web Apps) technology, built with [SvelteKit](https://kit.svelte.dev/).
+## Creating a project
 
-Features:
+If you're seeing this, you've probably already done this step. Congrats!
 
-* Economy system
-* Fishing mini-game
-* Inventory system
+```bash
+# create a new project in the current directory
+npm create svelte@latest
 
-## Setup
+# create a new project in my-app
+npm create svelte@latest my-app
+```
 
-Setup guide can be found on [this Notion page](https://timnik.notion.site/Campfire-Setup-Guide-f8afd3486bc34b83b191d1f9b066771b).
+## Developing
 
-## Project structure
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-This project uses SvelteKit for both client and server parts. SvelteKit makes it way easier to write the app and has a lot of utilities for API creation and state management.
+```bash
+npm run dev
 
-The database schema is defined in `/prisma/schema.prisma`. You can generate Prisma client and push changes to your database using `npx prisma db push`.
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
 
-You can see all the pages in `src/routes/` directory. Utility code, global states and components can be found in `src/lib/client` directory.
+## Building
 
-API enpoinds lay in `src/routes/api` directory, middlewared by `hooks.server.ts` file, which handles user creation and authentification, as well as validating init data coming from Telegram.
+To create a production version of your app:
 
-Campfire has a localization system (`src/lib/shared/localization.ts`). It works automatically, taking the language the user uses in Telegram.
+```bash
+npm run build
+```
 
-Useful links:
+You can preview the production build with `npm run preview`.
 
-* https://www.prisma.io/docs
-* https://kit.svelte.dev/docs
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.

@@ -1,7 +1,0 @@
-export { default as Coin } from './Coin.svelte'
-export { default as Ruby } from './Ruby.svelte'
-export { default as Carp } from './items/Carp.svelte'
-export { default as Carrot } from './items/Carrot.svelte'
-export { default as Envelope } from './items/Envelope.svelte'
-export { default as Pufferfish } from './items/Pufferfish.svelte'
-export { default as Pumpkin } from './items/Pumpkin.svelte'
