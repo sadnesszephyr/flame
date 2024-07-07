@@ -1,0 +1,31 @@
+.with-ripple {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.ripple {
+	aspect-ratio: 1/1;
+	border-radius: 50%;
+	background: var(--ripple-color, rgba(0, 0, 0, 0.5));
+	position: absolute;
+	left: 0;
+	right: 0;
+	translate: -50% -50%;
+	animation: ripple 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: 1s;
+	z-index: 1;
+	pointer-events: none;
+}
+
+@keyframes ripple {
+	from {
+		scale: 0;
+		filter: blur(64px);
+	}
+
+	to {
+		scale: 1;
+		filter: blur(4px);
+	}
+}

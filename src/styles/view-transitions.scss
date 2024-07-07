@@ -1,0 +1,72 @@
+@keyframes forward-enter {
+	from {
+		transform: translateX(30px);
+	}
+}
+
+@keyframes forward-exit {
+	to {
+		transform: translateX(-30px);
+	}
+}
+
+@keyframes backward-enter {
+	from {
+		transform: translateX(-30px);
+	}
+}
+
+@keyframes backward-exit {
+	to {
+		transform: translateX(30px);
+	}
+}
+
+@keyframes opacity-exit {
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes opacity-enter {
+	0% {
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+html.transition-forward::view-transition-old(root) {
+	animation:
+		0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both forward-exit,
+		0.5s linear both opacity-exit;
+}
+
+html.transition-forward::view-transition-new(root) {
+	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both forward-enter,
+	0.5s linear both opacity-enter;
+}
+
+html.transition-backward::view-transition-old(root) {
+	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both backward-exit,
+	0.5s linear both opacity-exit;
+}
+
+html.transition-backward::view-transition-new(root) {
+	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both backward-enter,
+	0.5s linear both opacity-enter;
+}

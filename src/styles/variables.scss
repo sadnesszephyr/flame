@@ -1,0 +1,21 @@
+:root {
+	--font: 'Roboto', 'Segoe UI', sans-serif;
+
+	--background: var(--tg-theme-bg-color, #FFFFFF);
+	--background-secondary: var(--tg-theme-secondary-bg-color, #F0F0F0);
+	--foreground: var(--tg-theme-text-color, #222222);
+	--text: var(--tg-theme-subtitle-text-color, #999999);
+	--section-header: var(--tg-theme-section-header-text-color, #2C94EC);
+	--accent: var(--tg-theme-accent-text-color, #50A8EB);
+	--accent-foreground: var(--tg-theme-button-text-color, #FFFFFF);
+	--link: var(--tg-theme-link-color, #3A95D5);
+	--danger: var(--tg-theme-destructive-text-color, #CC2929);
+	--hint: var(--tg-theme-destructive-hint-color, #999999);
+
+	--muted: color-mix(in srgb, var(--background), var(--text) 33%);
+	
+	--success: #31b545;
+	--ripple-color: rgba(0, 0, 0, 0.05);
+	--border-color: rgba(0, 0, 0, 0.1);
+	--border-width: 0;
+}

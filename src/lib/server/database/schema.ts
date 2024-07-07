@@ -1,12 +1,13 @@
-import { bigint, date, integer, jsonb, pgTable, primaryKey, text } from 'drizzle-orm/pg-core'
+import { bigint, integer, jsonb, pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('user', {
 	id: bigint('id', { mode: 'number' }).primaryKey(),
+	username: text('username').notNull().unique(),
 	coins: integer('coins').notNull(),
 	rubies: integer('rubies').notNull(),
 	level: integer('level').notNull().default(0),
 	exp: integer('exp').notNull().default(0),
-	joinedAt: date('joined_at').notNull().defaultNow(),
+	joinedAt: timestamp('joined_at').notNull().defaultNow(),
 	settings: jsonb('settings').notNull().default({})
 })
 

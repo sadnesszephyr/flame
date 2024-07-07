@@ -68,7 +68,7 @@ export default [
 			'no-unsafe-optional-chaining': 'warn',
 			'no-unused-private-class-members': 'warn',
 			'no-unused-vars': 'warn',
-			'no-use-before-define': 'error',
+			// 'no-use-before-define': 'error',
 			'no-useless-backreference': 'warn',
 			'require-atomic-updates': 'warn',
 			'use-isnan': 'error',
@@ -83,7 +83,7 @@ export default [
 			'@stylistic/arrow-spacing': 'error',
 			'@stylistic/array-bracket-spacing': ['error', 'never'],
 			'@stylistic/block-spacing': 'error',
-			'@stylistic/brace-style': ['error', '1tbs', {
+			'@stylistic/brace-style': ['error', 'stroustrup', {
 				allowSingleLine: true
 			}],
 			'@stylistic/quotes': ['error', 'single', {
@@ -157,9 +157,9 @@ export default [
 				maxBOF: 0,
 				maxEOF: 0
 			}],
-			'@stylistic/no-tabs': ['error', {
-				allowIndentationTabs: true
-			}],
+			// '@stylistic/no-tabs': ['error', {
+			// 	allowIndentationTabs: true
+			// }],
 			'@stylistic/max-len': ['warn', {
 				code: 120,
 				ignoreUrls: true,
