@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm'
 import { bigint, integer, jsonb, pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('user', {
@@ -11,10 +12,21 @@ export const users = pgTable('user', {
 	settings: jsonb('settings').notNull().default({})
 })
 
+export const usersRelations = relations(users, ({ many }) => ({
+	inventoryItems: many(inventoryItems)
+}))
+
 export const inventoryItems = pgTable('inventory_item', {
 	userId: bigint('user_id', { mode: 'number' }).notNull(),
 	itemId: text('item_id').notNull(),
 	quantity: integer('quantity').notNull().default(1)
 }, (table) => ({
 	pk: primaryKey({ columns: [table.userId, table.itemId] })
+}))
+
+export const inventoryItemsRelations = relations(inventoryItems, ({ one }) => ({
+	user: one(users, {
+		fields: [inventoryItems.userId],
+		references: [users.id]
+	})
 }))

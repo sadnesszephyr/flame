@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onNavigate } from '$app/navigation'
 	import { appManager } from '$lib/AppManager'
-	import { TopBar, NavigationBar, Snackbars } from '$lib/components'
+	import { TopBar, NavigationBar, Snackbars, Header } from '$lib/components'
 	import AppLoader from '$lib/components/appLoader/AppLoader.svelte'
 	import { snackbar } from '$lib/components/snackbar/store'
 	import { request } from '$lib/request'
 	import { clientUser } from '$lib/stores/clientUser'
+	import { inventory, type Inventory } from '$lib/stores/inventory'
 	import { supabase } from '$lib/supabase'
 	import '../styles/global.scss'
 
@@ -16,6 +17,33 @@
 	if (!$clientUser) {
 		request('getMe').then((userData) => {
 			clientUser.set(userData)
+			inventory.set(userData.inventoryItems)
+
+			supabase
+				.channel(`events-${userData.id}`)
+				.on(
+					'broadcast',
+					{
+						event: 'inventoryUpdate'
+					},
+					({ payload }: { payload: Inventory }) => {
+						inventory.update((inv) => {
+							const added = payload.filter((item) => !$inventory.find((i) => i.itemId === item.itemId))
+							const updatedAndDeleted = inv.map((item) => {
+								const newItem = payload.find((i) => i.itemId === item.itemId)
+
+								if (!newItem) return item
+								if (newItem.quantity === 0) return null
+								return {
+									...item,
+									quantity: newItem.quantity
+								}
+							}).filter((item) => item !== null)
+							return [...added, ...updatedAndDeleted]
+						})
+					}
+				)
+				.subscribe()
 		})
 	}
 
@@ -74,18 +102,20 @@
 </script>
 
 <div class="app">
-	{#if !$clientUser}
+	{#if $clientUser}
+		<Header/>
+		{#if appManager.isStandalone}
+			<TopBar/>
+		{/if}
+		<main class="main">
+			{@render children()}
+			<Snackbars/>
+		</main>
+		<NavigationBar/>
+	{:else}
 		<AppLoader/>
 	{/if}
-
-	{#if appManager.isStandalone}
-		<TopBar/>
-	{/if}
-	<main class="main">
-		{@render children()}
-		<Snackbars/>
-	</main>
-	<NavigationBar/>
+	
 </div>
 
 <style lang="scss">

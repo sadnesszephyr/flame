@@ -47,7 +47,6 @@ bot.on('message', async (message) => {
 		// }
 
 		if (!startParam) {
-			// @ts-expect-error problem with generics
 			// TODO
 			await sendGreetingsMessage(message.chat)
 		}

@@ -15,7 +15,7 @@
 	--muted: color-mix(in srgb, var(--background), var(--text) 33%);
 	
 	--success: #31b545;
-	--ripple-color: rgba(0, 0, 0, 0.05);
+	--ripple-color: color-mix(in srgb, var(--foreground) 5%, transparent);
 	--border-color: rgba(0, 0, 0, 0.1);
 	--border-width: 0;
 }

@@ -1,6 +1,4 @@
 import database from '$lib/server/database'
-import { users } from '$lib/server/database/schema'
-import { eq } from 'drizzle-orm'
 import type { Method } from '../Method'
 import { z } from 'zod'
 
@@ -9,8 +7,12 @@ export default {
 	bodySchema: z.null(),
 	async handler({ userId }) {
 		const userData = await database.query.users.findFirst({
-			where: eq(users.id, userId)
+			where: (users, { eq }) => eq(users.id, userId),
+			with: {
+				inventoryItems: true
+			}
 		})
+
 		return userData
 	}
 } satisfies Method

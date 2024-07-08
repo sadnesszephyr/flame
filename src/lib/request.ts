@@ -16,7 +16,7 @@ export async function request(method: string, body?: unknown) {
 	}
 
 	const res = await fetch('/api/method/' + method, {
-		body: JSON.stringify(body),
+		body: JSON.stringify(body ?? {}),
 		method: 'POST',
 		headers: {
 			Authorization: autorizationString

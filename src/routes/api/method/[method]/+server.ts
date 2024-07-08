@@ -55,8 +55,10 @@ export async function POST(event: RequestEvent) {
 				}))[0]
 			await bot.log(`🧡 User ${initDataUserRaw.id} joined Campfire`)
 		}
+
+		const body = await event.request.json()
 		
-		const data = await ApiManager.handle(event.params.method!, initDataUserRaw.id, null)
+		const data = await ApiManager.handle(event.params.method!, initDataUserRaw.id, body)
 
 		return json(data)
 	}
