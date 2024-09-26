@@ -22,10 +22,10 @@
 
 <style lang="scss">
 	.snackbars {
-		position: fixed ;
+		position: absolute;
 		display: flex;
 		flex-direction: column;
-		bottom: 1rem;
+		bottom: 6rem;
 		left: 1rem;
 		right: 1rem;
 		view-transition-name: snackbars;

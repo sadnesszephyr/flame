@@ -40,12 +40,12 @@
 <style lang="scss">
 	.button {
 		height: 3rem;
-		background: var(--accent);
+		background: var(--button-background);
 		padding: 0 3rem;
 		font-size: 14px;
 		line-height: 1.4;
 		font-weight: 500;
-		color: white;
+		color: var(--button-label);
 		border: none;
 		border-radius: 0.5rem;
 		display: flex;
@@ -58,19 +58,30 @@
 		--ripple-color: rgba(0, 0, 0, 0.2);
 		font-family: var(--font);
 		outline: none;
+		transition: 0.2s;
+		// flex: 1;
 
 		&:disabled {
 			cursor: default;
 			opacity: 0.5;
 			--ripple-color: transparent;
 		}
+
+		&:active {
+			scale: 0.98;
+		}
 	}
 
 	// Variants
 
+	.primary {
+		--button-background: var(--accent);
+		--button-label: white;
+	}
+
 	.secondary {
-		background: var(--muted);
-		color: var(--foreground);
+		--button-background: var(--muted);
+		--button-label: var(--foreground);
 	}
 
 	.link {

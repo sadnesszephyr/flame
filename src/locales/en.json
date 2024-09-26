@@ -1,0 +1,14 @@
+{
+	"items": {
+		"carp": {
+			"name": "Carp"
+		}
+	},
+	"home": {
+		"fishing": "Fishing",
+		"garden": "Garden",
+		"daily": "Daily bonus",
+		"players": "Players",
+		"news": "News"
+	}
+}

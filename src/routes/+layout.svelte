@@ -1,23 +1,38 @@
 <script lang="ts">
-	import { onNavigate } from '$app/navigation'
+	import { dev } from '$app/environment'
+	import { goto, onNavigate } from '$app/navigation'
+	import { base } from '$app/paths'
+	import { page } from '$app/stores'
 	import { appManager } from '$lib/AppManager'
-	import { TopBar, NavigationBar, Snackbars, Header } from '$lib/components'
-	import AppLoader from '$lib/components/appLoader/AppLoader.svelte'
+	import { NavigationBar, Snackbars, Header, AppLoader } from '$lib/components'
 	import { snackbar } from '$lib/components/snackbar/store'
 	import { request } from '$lib/request'
 	import { clientUser } from '$lib/stores/clientUser'
 	import { inventory, type Inventory } from '$lib/stores/inventory'
 	import { supabase } from '$lib/supabase'
 	import '../styles/global.scss'
+	import { tick } from 'svelte'
+	import { fade } from 'svelte/transition'
 
 	let { children } = $props()
 
-	window.Telegram.WebApp.setHeaderColor(window.Telegram.WebApp.themeParams.bg_color)
+	if (appManager.isStandalone) {
+		if (!localStorage.getItem('token')) {
+			goto('login', {
+				replaceState: true
+			})
+		}
+	}
+	else {
+		window.Telegram.WebApp.setHeaderColor(window.Telegram.WebApp.themeParams.bg_color)
+	}
 
 	if (!$clientUser) {
-		request('getMe').then((userData) => {
+		request('getMe').then(async (userData) => {
+			userData.lastFishedAt = userData.lastFishedAt ? new Date(userData.lastFishedAt) : undefined
 			clientUser.set(userData)
 			inventory.set(userData.inventoryItems)
+			await tick()
 
 			supabase
 				.channel(`events-${userData.id}`)
@@ -26,11 +41,12 @@
 					{
 						event: 'inventoryUpdate'
 					},
-					({ payload }: { payload: Inventory }) => {
+					({ payload }: { payload: { data: Inventory } }) => {
 						inventory.update((inv) => {
-							const added = payload.filter((item) => !$inventory.find((i) => i.itemId === item.itemId))
+							const added = payload.data
+								.filter((item) => !$inventory.find((i) => i.itemId === item.itemId))
 							const updatedAndDeleted = inv.map((item) => {
-								const newItem = payload.find((i) => i.itemId === item.itemId)
+								const newItem = payload.data.find((i) => i.itemId === item.itemId)
 
 								if (!newItem) return item
 								if (newItem.quantity === 0) return null
@@ -47,40 +63,9 @@
 		})
 	}
 
-	function isChildRoute(oldPath: string, newPath: string) {
-		const oldSegments = oldPath.split('/').filter(Boolean)
-		const newSegments = newPath.split('/').filter(Boolean)
-
-		if (newSegments.length > oldSegments.length) {
-			return oldSegments.every((segment, index) => segment === newSegments[index])
-		}
-
-		return false
-	}
-
-	function isParentRoute(oldPath: string, newPath: string) {
-		const oldSegments = oldPath.split('/').filter(Boolean)
-		const newSegments = newPath.split('/').filter(Boolean)
-
-		if (newSegments.length < oldSegments.length) {
-			return newSegments.every((segment, index) => segment === oldSegments[index])
-		}
-
-		return false
-	}
-
 	onNavigate(async (navigation) => {
 		if (!('startViewTransition' in document)) return
 
-		const oldRoute = navigation.from
-		const newRoute = navigation.to
-
-		const isChild = isChildRoute(oldRoute!.url.pathname, newRoute!.url.pathname)
-		const isParent = isParentRoute(oldRoute!.url.pathname, newRoute!.url.pathname)
-
-		document.documentElement.classList.toggle('transition-forward', isChild)
-		document.documentElement.classList.toggle('transition-backward', isParent)
-		
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {
 				resolve()
@@ -90,32 +75,40 @@
 	})
 
 
-	const channel = supabase.channel(`notifications-${window.Telegram.WebApp.initDataUnsafe.user!.id}`)
-
-	channel
-		.on('broadcast', { event: 'n' }, (notification) => {
-			snackbar({
-				text: notification.payload.message
+	if (!appManager.isStandalone) {
+		const channel = supabase.channel(`notifications-${window.Telegram.WebApp.initDataUnsafe.user!.id}`)
+	
+		channel
+			.on('broadcast', { event: 'n' }, (notification) => {
+				snackbar({
+					text: notification.payload.message
+				})
 			})
-		})
-		.subscribe()
+			.subscribe()
+	}
 </script>
 
+<svelte:head>
+	<link rel="manifest" href={`${base}/${dev ? 'site-dev' : 'site'}.webmanifest`}>
+	<title>Campfire</title>
+</svelte:head>
+
+<svelte:body data-class="hi"/>
+
 <div class="app">
-	{#if $clientUser}
+	{#if $page.url.pathname === '/login'}
+	<!--  -->
+		{@render children()}
+	{:else if $clientUser}
 		<Header/>
-		{#if appManager.isStandalone}
-			<TopBar/>
-		{/if}
-		<main class="main">
+		<main class="main" transition:fade={{ duration: 200 }}>
 			{@render children()}
-			<Snackbars/>
 		</main>
 		<NavigationBar/>
+		<Snackbars/>
 	{:else}
 		<AppLoader/>
 	{/if}
-	
 </div>
 
 <style lang="scss">
@@ -123,12 +116,13 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		background: var(--background-secondary);
+		position: relative;
 	}
 
 	.main {
 		position: relative;
 		flex: 1;
 		overflow-y: scroll;
-		// padding: 1rem;
 	}
 </style>

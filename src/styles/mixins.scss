@@ -13,6 +13,11 @@
 	text-decoration: unset;
 }
 
+@mixin full-card {
+	@include card;
+	border-radius: 0;
+}
+
 @mixin skeleton {
 	background: var(--background);
 	border-radius: 0.5rem;

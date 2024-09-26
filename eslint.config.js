@@ -22,6 +22,7 @@ export default [
 			'@stylistic': stylistic
 		},
 		rules: {
+			'svelte/valid-compile': 'off',
 			'constructor-super': 'error',
 			'for-direction': 'warn',
 			'getter-return': 'error',
@@ -67,10 +68,13 @@ export default [
 			'no-unsafe-negation': 'warn',
 			'no-unsafe-optional-chaining': 'warn',
 			'no-unused-private-class-members': 'warn',
-			'no-unused-vars': 'warn',
+			'@typescript-eslint/no-unused-vars': ['warn', {
+				args: 'after-used',
+				ignoreRestSiblings: true
+			}],
 			// 'no-use-before-define': 'error',
 			'no-useless-backreference': 'warn',
-			'require-atomic-updates': 'warn',
+			// 'require-atomic-updates': 'warn',
 			'use-isnan': 'error',
 			'valid-typeof': ['error', {
 				requireStringLiterals: false
@@ -86,7 +90,7 @@ export default [
 			'@stylistic/brace-style': ['error', 'stroustrup', {
 				allowSingleLine: true
 			}],
-			'@stylistic/quotes': ['error', 'single', {
+			'@stylistic/quotes': ['warn', 'single', {
 				avoidEscape: false
 			}],
 			'@stylistic/comma-spacing': 'error',
@@ -129,7 +133,7 @@ export default [
 			'@stylistic/array-element-newline': ['error', 'consistent'],
 			'@stylistic/eol-last': 'error',
 			'@stylistic/function-call-argument-newline': ['error', 'consistent'],
-			'@stylistic/function-paren-newline': ['error', 'multiline'],
+			'@stylistic/function-paren-newline': ['error', 'consistent'],
 			'@stylistic/lines-between-class-members': ['error', {
 				enforce: [
 					{ blankLine: 'always', prev: '*', next: '*' },

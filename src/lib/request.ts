@@ -1,4 +1,12 @@
-export async function request(method: string, body?: unknown) {
+import type { ApiManager, methodId } from '$lib/server/api/ApiManager'
+import type { z } from 'zod'
+
+export type serverResponse<T extends methodId> = Awaited<ReturnType<typeof ApiManager['methods'][T]['handler']>>
+
+export async function request<T extends methodId>(
+	method: T,
+	body?: z.infer<typeof ApiManager['methods'][T]['bodySchema']>
+): Promise<serverResponse<T>> {
 	// let requestId = Math.round(Math.random() * 100000)
 
 	// activeRequests.update((requests) => {
@@ -23,7 +31,12 @@ export async function request(method: string, body?: unknown) {
 		}
 	})
 
-	const data = await res.json()
+	const data = await res.json().catch(() => {
+		if (!res.ok) {
+			throw new Error('Unknown error')
+		}
+		return
+	})
 
 	if (!res.ok) {
 		throw new Error(data.message)

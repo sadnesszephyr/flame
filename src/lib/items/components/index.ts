@@ -1,0 +1,1 @@
+export { FishableComponent } from './Fishable'

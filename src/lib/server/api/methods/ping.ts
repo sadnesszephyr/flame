@@ -1,7 +1,7 @@
-import type { Method } from '../Method'
+import { createMethod } from '../Method'
 import { z } from 'zod'
 
-export default {
+export default createMethod({
 	id: 'ping',
 	bodySchema: z.null(),
 	async handler() {
@@ -9,4 +9,4 @@ export default {
 			pong: true
 		}
 	}
-} satisfies Method
+})

@@ -1,9 +1,13 @@
-import { Chat, InlineKeyboardButton, InlineKeyboardMarkup } from 'telescript'
+import { Chat, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode } from 'tgkit'
 import { BotClient } from './Client'
 import { TELEGRAM_BOT_TOKEN } from '$env/static/private'
+import database from '$lib/server/database'
+import { friendships, relationships } from '$lib/server/database/schema'
+import { eq } from 'drizzle-orm'
 
 export const bot = new BotClient({
-	token: TELEGRAM_BOT_TOKEN
+	token: TELEGRAM_BOT_TOKEN,
+	defaultParseMode: ParseMode.MarkdownV2
 })
 
 export async function getUserProfilePhoto(userId: number) {
@@ -70,11 +74,59 @@ a cool and cozy experience for you, as I did before in Discord! 🧡`, {
 						url: 'https://campfire.sadzep.me/'
 					}
 				})
-			]])
+			]]),
+		parseMode: ParseMode.MarkdownV2
 	})
 }
 
 // @ts-expect-error fix error later
 bot.on('preCheckoutQuery', (preCheckoutQuery: PreCheckoutQuery) => {
 	bot.answerPreCheckoutQuery(preCheckoutQuery.id, true)
+})
+
+bot.on('callbackQuery', async (callbackQuery) => {
+	if (!callbackQuery.data) return
+	const actionId = callbackQuery.data.split(':')[0]
+
+	if (actionId === 'acceptFriendRequest') {
+		await callbackQuery.answer({})
+		await bot.editMessageText(
+			callbackQuery.message!.chat.id,
+			callbackQuery.message!.id,
+			'🌸 Friend request accepted'
+		)
+
+		await database
+			.insert(friendships)
+			.values({
+				initiatorId: callbackQuery.message!.chat.id,
+				targetId: Number(callbackQuery.data.split(':')[1])
+			})
+	}
+	
+	if (actionId === 'acceptRelationship') {
+		const relationship = await database.query.relationships.findFirst({
+			where: eq(relationships.id, Number(callbackQuery.data.split(':')[1]))
+		})
+		await callbackQuery.answer()
+		await bot.editMessageText(
+			callbackQuery.message!.chat.id,
+			callbackQuery.message!.id,
+			`🌸 Now you are in a relationship with user ${relationship?.initiatorId}`
+		)
+
+		await database
+			.update(relationships)
+			.set({
+				result: true
+			})
+			.where(eq(relationships.id, Number(callbackQuery.data.split(':')[1])))
+	}
+
+	if (actionId === 'rejectRelationship') {
+		await callbackQuery.answer({
+			text: 'no pls accept',
+			showAlert: true
+		})
+	}
 })

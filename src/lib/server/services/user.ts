@@ -5,14 +5,16 @@ import type { WebAppUser } from '@twa-dev/types'
 import { and, eq } from 'drizzle-orm'
 
 export async function createUser(initData: WebAppUser) {
-	const userData = await database
+	const [userData] = await database
 		.insert(users)
 		.values({
 			id: initData.id,
 			username: initData.username ?? `user${initData.id}`,
+			name: initData.username ?? `user${initData.id}`,
 			coins: 100,
 			rubies: 0
 		})
+		.returning()
 	
 	return userData
 }
@@ -81,20 +83,14 @@ export async function updateInventory(userId: number, itemId: string, quantity: 
 	}
 }
 
-async function sendEvent(userId: number, name: string, payload: unknown) {
+async function sendEvent(userId: number, name: string, data: unknown) {
 	const channel = supabase.channel(`events-${userId}`)
 
-	channel.subscribe(async (status) => {
-		if (status !== 'SUBSCRIBED') {
-			return
-		}
-
-		await channel.send({
-			event: name,
-			type: 'broadcast',
-			payload
-		})
-
-		channel.unsubscribe()
+	channel.send({
+		event: name,
+		type: 'broadcast',
+		payload: { data }
 	})
+
+	supabase.removeChannel(channel)
 }

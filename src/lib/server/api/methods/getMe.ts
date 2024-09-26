@@ -1,18 +1,34 @@
 import database from '$lib/server/database'
-import type { Method } from '../Method'
+import { createMethod } from '../Method'
 import { z } from 'zod'
+import type { ClientUser } from '$lib/stores/clientUser'
+import { eq } from 'drizzle-orm'
+import { inventoryItems } from '$lib/server/database/schema'
+import type { ItemId } from '$lib/items'
 
-export default {
+export default createMethod({
 	id: 'getMe',
 	bodySchema: z.null(),
-	async handler({ userId }) {
-		const userData = await database.query.users.findFirst({
-			where: (users, { eq }) => eq(users.id, userId),
-			with: {
-				inventoryItems: true
-			}
+	async handler({ user }): Promise<ClientUser> {
+		const items = await database.query.inventoryItems.findMany({
+			where: eq(inventoryItems.userId, user.id)
 		})
 
-		return userData
+		return {
+			id: user.id,
+			username: user.username,
+			name: user.name,
+			coins: user.coins,
+			rubies: user.rubies,
+			level: user.level,
+			isAdmin: user.isAdmin,
+			exp: user.exp,
+			translatorLanguages: user.translatorLanguages ?? undefined,
+			lastFishedAt: user.lastFishedAt ?? undefined,
+			inventoryItems: items.map((item) => ({
+				itemId: item.itemId as ItemId,
+				quantity: item.quantity
+			}))
+		}
 	}
-} satisfies Method
+})

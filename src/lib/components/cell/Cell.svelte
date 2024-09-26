@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions'
 	import type { iconComponent } from '$lib/components/icons'
-	import { Switch } from '$lib/components'
+	import { Switch, ProfilePhoto } from '$lib/components'
 
 	type CellVariant = 'default' | 'danger'
 
@@ -11,6 +11,8 @@
 		title: string,
 		subtitle?: string,
 		icon?: iconComponent,
+		imageUrl?: string,
+		profilehotoUserId?: number,
 		href?: never,
 		enabled?: never
 	}
@@ -36,6 +38,8 @@
 		title,
 		subtitle,
 		icon,
+		imageUrl,
+		profilehotoUserId,
 		type = 'default',
 		href,
 		enabled = $bindable(false)
@@ -45,10 +49,16 @@
 </script>
 
 {#if type === 'default'}
-	<div class={className} use:ripple>
+	<div class={className} class:has-profile-photo={profilehotoUserId} use:ripple>
 		<hr class="divider"/>
 		{#if icon}
 			<svelte:component this={icon}/>
+		{/if}
+		{#if imageUrl}
+			<img src={imageUrl} class="image" alt=""/>
+		{/if}
+		{#if profilehotoUserId}
+			<ProfilePhoto userId={profilehotoUserId} size="3rem"/>
 		{/if}
 		<div class="info">
 			<span class="title">{title}</span>
@@ -60,10 +70,16 @@
 {/if}
 
 {#if type === 'link'}
-	<a class={className} {href} use:ripple draggable="false">
+	<a class={className} class:has-profile-photo={profilehotoUserId} {href} use:ripple draggable="false">
 		<hr class="divider"/>
 		{#if icon}
 			<svelte:component this={icon}/>
+		{/if}
+		{#if imageUrl}
+			<img src={imageUrl} class="image" alt=""/>
+		{/if}
+		{#if profilehotoUserId}
+			<ProfilePhoto userId={profilehotoUserId} size="3rem"/>
 		{/if}
 		<div class="info">
 			<span class="title">{title}</span>
@@ -75,10 +91,16 @@
 {/if}
 
 {#if type === 'switch'}
-	<div class={className} use:ripple draggable="false">
+	<div class={className} class:has-profile-photo={profilehotoUserId} use:ripple draggable="false">
 		<hr class="divider"/>
 		{#if icon}
 			<svelte:component this={icon}/>
+		{/if}
+		{#if imageUrl}
+			<img src={imageUrl} class="image" alt=""/>
+		{/if}
+		{#if profilehotoUserId}
+			<ProfilePhoto userId={profilehotoUserId} size="3rem"/>
 		{/if}
 		<div class="info">
 			<span class="title">{title}</span>
@@ -100,7 +122,7 @@
 		display: flex;
 		align-items: center;
 		min-height: 3rem;
-		color: var(--text);
+		color: var(--foreground-subtle);
 		gap: 1.25rem;
 		border: none;
 		background: none;
@@ -112,6 +134,10 @@
 		&:first-of-type .divider {
 			display: none;
 		}
+
+		&.has-profile-photo {
+			padding: 0.5rem 1.25rem;
+		}
 	}
 
 	.divider {
@@ -121,7 +147,7 @@
 		right: 0;
 		top: 0;
 		margin: 0;
-		border-top: 1px solid var(--background-secondary);
+		border-top: 1px solid var(--separator);
 	}
 
 	.info {
@@ -137,7 +163,7 @@
 	}
 
 	.subtitle {
-		color: var(--text);
+		color: var(--foreground-subtle);
 		font-size: 0.75rem;
 		line-height: 0.875rem;
 	}

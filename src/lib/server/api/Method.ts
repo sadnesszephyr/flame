@@ -1,11 +1,18 @@
+import type database from '$lib/server/database'
+import type { users } from '$lib/server/database/schema'
+import type { InferSelectModel } from 'drizzle-orm'
 import { ZodSchema, z } from 'zod'
 
-export interface Method<T extends ZodSchema = ZodSchema> {
-	id: string,
+export interface Method<T extends ZodSchema, I extends string, R> {
+	id: I,
 	bodySchema: T,
-	// eslint-disable-next-line no-unused-vars
+	public?: boolean,
 	handler: (context: {
-		userId: number,
+		user: InferSelectModel<typeof users>,
 		body: z.infer<T>
-	}) => Promise<unknown>
+	}) => Promise<R>
+}
+
+export function createMethod<T extends ZodSchema, I extends string, R>(method: Method<T, I, R>) {
+	return method as Method<T, I, R>
 }

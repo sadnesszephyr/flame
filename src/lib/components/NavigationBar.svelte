@@ -1,22 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores'
+	import { ProfilePhoto } from '$lib/components'
 	// import { userData } from '$lib/client/store'
-	import { House, Medal, Tent } from '$lib/components/icons'
+	import { House, Map } from '$lib/components/icons'
+	import { clientUser } from '$lib/stores/clientUser'
 	// import ProfilePhoto from '$lib/client/components/ProfilePhoto.svelte'
 	
 	let segments = [{
 		icon: House,
 		page: '/',
 		label: 'Home'
-	}, {
-		icon: Medal,
-		page: '/top',
-		label: 'Top'
-	}, {
-		icon: Tent,
-		page: '/camp',
-		label: 'Camp'
-	}, {
+	},
+	{
 		icon: 'profilePhoto',
 		page: '/me',
 		label: 'Profile'
@@ -28,12 +23,7 @@
 		<a href={segment.page} class="segment" class:active={$page.url.pathname === segment.page}>
 			<div class="icon-container">
 				{#if typeof segment.icon === 'string'}
-					<!-- svelte-ignore a11y_img_redundant_alt -->
-					<img
-						class="profile-photo"
-						src={`/profilePhoto/${window.Telegram.WebApp.initDataUnsafe.user?.id}`}
-						alt="Profile photo"
-					/>
+					<ProfilePhoto size="1.5rem" userId={$clientUser!.id}/>
 				{:else}
 					<svelte:component this={segment.icon}/>
 				{/if}
@@ -49,7 +39,7 @@
 		background: var(--background);
 		display: flex;
 		height: 5rem;
-		view-transition-name: navigation-bar;
+		view-transition-name: disabled;
 		box-shadow:
 			0 var(--border-width) 0 0 var(--border-color) inset;
 		
@@ -90,7 +80,7 @@
 		width: 2rem;
 		height: 2rem;
 		border-radius: 1rem;
-		color: var(--text);
+		color: var(--foreground-subtle);
 		display: flex;
 		align-items: center;
 		justify-content: center;

@@ -1,21 +1,22 @@
 import { TELEGRAM_BOT_TOKEN } from '$env/static/private'
-import { ApiManager } from '$lib/server/api/ApiManager'
+import { ApiManager, type methodId } from '$lib/server/api/ApiManager'
 import { bot } from '$lib/server/bot'
 import database from '$lib/server/database'
-import { users } from '$lib/server/database/schema'
+import { authTokens, users } from '$lib/server/database/schema'
+import { createUser } from '$lib/server/services/user'
 import { error, json, type RequestEvent } from '@sveltejs/kit'
 import cryptoEs from 'crypto-es'
 import { eq } from 'drizzle-orm'
 
 export async function POST(event: RequestEvent) {
-	const authorizationString = event.request.headers.get('Authorization')
+	const authString = event.request.headers.get('Authorization')
 		
-	if (!authorizationString) {
+	if (!authString) {
 		throw error(401)
 	}
 
-	if (authorizationString.startsWith('TMA ')) {
-		const paramsRaw = authorizationString.split(' ')[1]
+	if (authString.startsWith('TMA ')) {
+		const paramsRaw = authString.split(' ')[1]
 
 		const params = new URLSearchParams(paramsRaw)
 		const hash = params.get('hash')
@@ -39,26 +40,33 @@ export async function POST(event: RequestEvent) {
 		const initDataRaw = Object.fromEntries(params)
 		const initDataUserRaw = JSON.parse(initDataRaw.user)
 
-		let userData = await database.query.users.findFirst({
+		let user = await database.query.users.findFirst({
 			where: eq(users.id, initDataUserRaw.id)
 		})
 
-		// create user if not exists yet
-		if (!userData) {
-			userData = (await database
-				.insert(users)
-				.values({
-					id: initDataUserRaw.id,
-					username: initDataUserRaw.username,
-					coins: 100,
-					rubies: 0
-				}))[0]
-			await bot.log(`🧡 User ${initDataUserRaw.id} joined Campfire`)
+		user ??= await createUser(initDataUserRaw)
+
+		const body = await event.request.json()
+		
+		const data = await ApiManager.handle(event.params.method as methodId, user, body)
+
+		return json(data)
+	}
+	else if (authString.startsWith('Standalone ')) {
+		const token = await database.query.authTokens.findFirst({
+			where: eq(authTokens.token, authString.split(' ')[1]),
+			with: {
+				user: true
+			}
+		})
+		
+		if (!token) {
+			error(403)
 		}
 
 		const body = await event.request.json()
 		
-		const data = await ApiManager.handle(event.params.method!, initDataUserRaw.id, body)
+		const data = await ApiManager.handle(event.params.method as methodId, token.user, body)
 
 		return json(data)
 	}

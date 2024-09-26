@@ -4,7 +4,7 @@ import * as childProcess from 'node:child_process'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	preprocess: vitePreprocess(),
+	preprocess: [vitePreprocess(), indexPreprocess],
 	compilerOptions: {
 		runes: true
 	},
@@ -16,7 +16,20 @@ const config = {
 		csrf: {
 			checkOrigin: false
 		}
+	},
+	vitePlugin: {
+		dynamicCompileOptions({ filename }) {
+			if (filename.includes('node_modules')) {
+				return {
+					runes: false
+				}
+			}
+		}
 	}
 }
 
 export default config
+
+async function indexPreprocess(content) {
+	return { code: content }
+}

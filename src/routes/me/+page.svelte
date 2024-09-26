@@ -1,15 +1,46 @@
-<script>
-	import { Cell, CellGroup } from '$lib/components'
-	import { Settings, Logout } from '$lib/components/icons'
+<script lang="ts">
+	import { Cell, CellGroup, ProfilePhoto } from '$lib/components'
+	import { Settings, Logout, Shield } from '$lib/components/icons'
+	import { clientUser } from '$lib/stores/clientUser'
 
 	window.Telegram.WebApp.BackButton.hide()
-
-	let bool = $state(false)
 </script>
 
-<CellGroup>
-	<Cell type="link" title="Settings" href="/me/settings" icon={Settings}/>
-	<Cell type="link" title="Admin page" href="/admin" icon={Settings}/>
-	<Cell type="default" title="Log out" variant="danger" icon={Logout}/>
-	<Cell type="switch" title="Log out" bind:enabled={bool}/>
-</CellGroup>
+<div class="container">
+	<div class="profile-card">
+		<ProfilePhoto userId={$clientUser!.id} size="8rem"/>
+		<span class="username">@{$clientUser!.username}</span>
+	</div>
+	
+	<CellGroup>
+		<Cell type="link" title="Settings" href="/me/settings" icon={Settings}/>
+		{#if $clientUser!.isAdmin}
+			<Cell type="link" title="Admin page" href="/admin" icon={Shield}/>
+		{/if}
+		<Cell type="default" title="Log out" variant="danger" icon={Logout}/>
+	</CellGroup>
+</div>
+
+<style lang="scss">
+	@import "src/styles/mixins.scss";
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.profile-card {
+		@include full-card;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		padding: 2rem 1rem;
+	}
+
+	.username {
+		font-size: 2rem;
+		font-family: var(--font-heading);
+	}
+</style>

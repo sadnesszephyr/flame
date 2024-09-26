@@ -1,9 +1,10 @@
+import type { ItemId } from '$lib/items'
 import { writable } from 'svelte/store'
 
 export type Inventory = InventoryItem[]
 
 export interface InventoryItem {
-	itemId: string,
+	itemId: ItemId,
 	quantity: number
 }
 

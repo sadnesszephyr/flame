@@ -45,14 +45,14 @@
 		position: absolute;
 		border-radius: 50%;
 		background: var(--background);
-		border: 0.125rem solid var(--text);
+		border: 0.125rem solid var(--foreground-subtle);
 		transition: 0.2s;
 	}
 
 	.back {
 		height: 1rem;
 		width: calc(2rem - 0.125rem);
-		background: var(--text);
+		background: var(--foreground-subtle);
 		border-radius: 0.5rem;
 		transition: 0.2s;
 	}

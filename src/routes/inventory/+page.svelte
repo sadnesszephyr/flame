@@ -1,6 +1,7 @@
 <script>
 	import { ripple } from '$lib/actions'
 	import { Button, ItemSprite } from '$lib/components'
+	import { itemManager } from '$lib/items'
 	import { request } from '$lib/request'
 	import { inventory } from '$lib/stores/inventory'
 	import { flip } from 'svelte/animate'
@@ -9,27 +10,13 @@
 
 <div class="item-list">
 	{#each $inventory as item (item.itemId)}
+		{@const itemData = itemManager.get(item.itemId)}
 		<div class="item-card" use:ripple animate:flip={{ duration: 200 }} transition:fade={{ duration: 200 }}>
-			<ItemSprite id={item.itemId} size="5rem"/>
+			<ItemSprite id={itemData?.sprite ?? ''} size="5rem"/>
 			<div class="item-quantity-badge">{item.quantity}</div>
 		</div>
 	{/each}
 </div>
-
-<Button onclick={() => {
-	inventory.update((inv) => inv
-		.map((item) =>
-			item.itemId === 'carp'
-				? {
-					itemId: 'carp',
-					quantity: item.quantity + 1
-				}
-				: item))
-	request('catchFish')
-}}>Catch carp</Button>
-<Button onclick={() => request('catchFish', {
-	release: true
-})}>Release poor carp</Button>
 
 <style lang="scss">
 	@import "/src/styles/mixins.scss";
@@ -46,6 +33,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		aspect-ratio: 1/1;
 	}
 
 	.item-quantity-badge {

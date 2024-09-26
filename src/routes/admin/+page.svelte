@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Switch, TextInput } from '$lib/components'
 	import { request } from '$lib/request'
+	import type { methodId } from '$lib/server/api/ApiManager'
 
 	let method: string = $state('')
 	let body: string = $state('')
@@ -14,7 +15,7 @@
 		<TextInput placeholder="Method" bind:value={method}/>
 		<TextInput placeholder="Body" bind:value={body}/>
 		<Button onclick={async () => {
-			result = await request(method, JSON.parse(body))
+			result = await request(method as methodId, JSON.parse(body))
 		}}>
 			Send request to <code class="code">/{method}</code>
 		</Button>

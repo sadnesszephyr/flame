@@ -1,0 +1,6 @@
+export { default as anchovy } from './Anchovy'
+export { default as carp } from './Carp'
+export { default as carrot } from './Carrot'
+export { default as envelope } from './Envelope'
+export { default as pufferfish } from './Pufferfish'
+export { default as rainbowTrout } from './RainbowTrout'

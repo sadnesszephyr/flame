@@ -20,7 +20,7 @@
 	.input {
 		padding: 0 1rem;
 		height: 3rem;
-		border: 1px solid color-mix(in srgb, var(--text) 20%, var(--background));
+		border: 1px solid color-mix(in srgb, var(--foreground-subtle) 20%, var(--background));
 		background: none;
 		border-radius: 0.5rem;
 		outline: none;
