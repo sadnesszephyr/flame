@@ -9,7 +9,7 @@
 	function login() {
 		window.Telegram.Login.auth(
 			{
-				bot_id: '7099255654'
+				bot_id: '6495156060'
 			},
 			async (data) => {
 				if (!data) {
