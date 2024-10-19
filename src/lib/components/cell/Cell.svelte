@@ -14,7 +14,8 @@
 		imageUrl?: string,
 		profilehotoUserId?: number,
 		href?: never,
-		enabled?: never
+		enabled?: never,
+		onclick?: () => void
 	}
 
 	interface DefaultCellProps extends BaseCellProps {
@@ -37,11 +38,12 @@
 		variant = 'default',
 		title,
 		subtitle,
-		icon,
+		icon: Icon,
 		imageUrl,
 		profilehotoUserId,
 		type = 'default',
 		href,
+		onclick,
 		enabled = $bindable(false)
 	}: CellProps = $props()
 
@@ -49,10 +51,15 @@
 </script>
 
 {#if type === 'default'}
-	<div class={className} class:has-profile-photo={profilehotoUserId} use:ripple>
+	<button
+		{onclick}
+		class={className}
+		class:has-profile-photo={profilehotoUserId}
+		use:ripple
+	>
 		<hr class="divider"/>
-		{#if icon}
-			<svelte:component this={icon}/>
+		{#if Icon}
+			<Icon/>
 		{/if}
 		{#if imageUrl}
 			<img src={imageUrl} class="image" alt=""/>
@@ -66,14 +73,22 @@
 				<span class="subtitle">{subtitle}</span>
 			{/if}
 		</div>
-	</div>
+	</button>
 {/if}
 
 {#if type === 'link'}
-	<a class={className} class:has-profile-photo={profilehotoUserId} {href} use:ripple draggable="false">
+	<a
+		{onclick}
+		onkeyup={onclick}
+		{href}
+		class={className}
+		class:has-profile-photo={profilehotoUserId}
+		use:ripple
+		draggable="false"
+	>
 		<hr class="divider"/>
-		{#if icon}
-			<svelte:component this={icon}/>
+		{#if Icon}
+			<Icon/>
 		{/if}
 		{#if imageUrl}
 			<img src={imageUrl} class="image" alt=""/>
@@ -91,10 +106,20 @@
 {/if}
 
 {#if type === 'switch'}
-	<div class={className} class:has-profile-photo={profilehotoUserId} use:ripple draggable="false">
+	<div
+		{onclick}
+		onkeyup={onclick}
+		role="switch"
+		aria-checked={enabled}
+		tabindex="0"
+		class={className}
+		class:has-profile-photo={profilehotoUserId}
+		use:ripple
+		draggable="false"
+	>
 		<hr class="divider"/>
-		{#if icon}
-			<svelte:component this={icon}/>
+		{#if Icon}
+			<Icon/>
 		{/if}
 		{#if imageUrl}
 			<img src={imageUrl} class="image" alt=""/>

@@ -1,0 +1,44 @@
+{
+	"home": {
+		"daily": "Bonus",
+		"fishing": "Pêche",
+		"garden": "Garth",
+		"news": "Nouvelles",
+		"players": "Joueurs"
+	},
+	"items": {
+		"carp": {
+			"name": "Carpe"
+		}
+	},
+	"languages": {
+		"en": "English",
+		"fr": "French",
+		"ru": "Russian"
+	},
+	"settings": {
+		"appearance": {
+			"$": "Apparence",
+			"cursiveHeadings": {
+				"subtitle": "Utilisez une police confortable pour les titres",
+				"title": "Titres confortables"
+			},
+			"highContrast": {
+				"subtitle": "Ajouter des bordures à certains éléments",
+				"title": "Contraste élevé"
+			},
+			"powerSaving": {
+				"subtitle": "Désactiver les animations pour économiser l'énergie",
+				"title": "Économie d'énergie"
+			}
+		},
+		"language": {
+			"$": "Langue",
+			"language": "Langue",
+			"translating": {
+				"$": "Traduction",
+				"enableEditor": "Activer l'éditeur"
+			}
+		}
+	}
+}

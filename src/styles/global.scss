@@ -16,6 +16,10 @@ body {
 	overflow: hidden;
 	max-width: 30rem;
 	margin: 0 auto;
+
+	&.cursive-headings {
+		--font-heading: "Shantell Sans";
+	}
 }
 
 * {

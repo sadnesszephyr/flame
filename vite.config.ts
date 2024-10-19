@@ -1,8 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite'
-import { defineConfig as defineVitestConfig } from 'vitest/config'
-// import { defineConfig } from 'vite'
+import { defineConfig } from 'vite'
 
-export default defineVitestConfig({
+export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
 		port: 1808,

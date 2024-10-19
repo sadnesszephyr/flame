@@ -9,6 +9,7 @@
 	import { request } from '$lib/request'
 	import { clientUser } from '$lib/stores/clientUser'
 	import { inventory, type Inventory } from '$lib/stores/inventory'
+	import { localSettings } from '$lib/stores/localSettings'
 	import { supabase } from '$lib/supabase'
 	import '../styles/global.scss'
 	import { tick } from 'svelte'
@@ -86,14 +87,17 @@
 			})
 			.subscribe()
 	}
+
+	localSettings.subscribe(({ appearance }) => {
+		document.body.classList.toggle('high-contrast', appearance.highContranst)
+		document.body.classList.toggle('cursive-headings', appearance.cursiveHeadings)
+	})
 </script>
 
 <svelte:head>
 	<link rel="manifest" href={`${base}/${dev ? 'site-dev' : 'site'}.webmanifest`}>
 	<title>Campfire</title>
 </svelte:head>
-
-<svelte:body data-class="hi"/>
 
 <div class="app">
 	{#if $page.url.pathname === '/login'}

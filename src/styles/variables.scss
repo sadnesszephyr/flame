@@ -21,7 +21,7 @@
 	--border-width: 0;
 
 	--font: 'Roboto';
-	--font-heading: "Shantell Sans";
+	--font-heading: var(--font);
 }
 
 @mixin theme-light {
@@ -38,6 +38,8 @@
 	--danger-fallback: #CC2929;
 	--hint-fallback: #A8A8A8;
 	--separator-fallback: #E6E6E6;
+
+	--garden-field-dry: #7a5242;
 }
 
 @mixin theme-dark {
@@ -54,6 +56,8 @@
 	--danger-fallback: #EE686F;
 	--hint-fallback: #999999;
 	--separator-fallback: #181819;
+
+	--garden-field-dry: #30221c;
 }
 
 html[data-theme="light"] {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Cell, CellGroup, ProfilePhoto } from '$lib/components'
-	import { Settings, Logout, Shield } from '$lib/components/icons'
+	import { Logout, Settings, Shield } from '$lib/components/icons'
 	import { clientUser } from '$lib/stores/clientUser'
 
 	window.Telegram.WebApp.BackButton.hide()
@@ -13,7 +13,7 @@
 	</div>
 	
 	<CellGroup>
-		<Cell type="link" title="Settings" href="/me/settings" icon={Settings}/>
+		<Cell type="link" title="Settings" href="/settings" icon={Settings}/>
 		{#if $clientUser!.isAdmin}
 			<Cell type="link" title="Admin page" href="/admin" icon={Shield}/>
 		{/if}

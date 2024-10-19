@@ -1,48 +1,56 @@
 import { derived, writable } from 'svelte/store'
 import enLocales from '../../locales/en.json'
 import ruLocales from '../../locales/ru.json'
+import { localSettings } from '$lib/stores/localSettings'
+import { languages } from '$lib/localization/languages'
 
 export type TFunction = (key: string, parameters?: Record<string, unknown>) => string
 
 type NestedRecord = { [k: string]: string | NestedRecord }
 
-export const userLanguage = typeof window !== 'undefined'
-	? window?.Telegram.WebApp.initDataUnsafe.user?.language_code
-	: undefined
+function translate(languageId: string, key: string, parameters: Record<string, unknown> = {}): string {
+	const languageData = languages.find((lang) => lang.id === languageId) ?? languages[0]
+	const locales: NestedRecord = languageData.strings
+	
+	const stringPath = key.split('.')
+	
+	let resultString: NestedRecord | string = locales
 
-export const clientLanguage = writable(userLanguage ?? 'en')
-
-export function getT(language: string): TFunction {
-	return (key: string, parameters: Record<string, unknown> = {}) => {
-		const locales: NestedRecord = language === 'en' ? enLocales : ruLocales
-		
-		const stringPath = key.split('.')
-		
-		let resultString: NestedRecord | string = locales
-		console.log(stringPath)
-
-		for (const stringKey of stringPath) {
-			// If there's no string found return key as a fallback
-			if (typeof resultString === 'string' || !resultString[stringKey]) {
-				console.warn(`Couldn't find a translation for key '${key}'`)
-				return key
+	for (const stringKey of stringPath) {
+		// If there's no string found return key as a fallback
+		if (typeof resultString === 'string' || !resultString[stringKey]) {
+			if (languageData.fallbackLanguageId) {
+				console.warn(`Couldn't find a translation for key '${key}' in '${languageId}' language, falling back to ${languageData.fallbackLanguageId}`)
+				return translate(languageData.fallbackLanguageId, key, parameters)
 			}
-			resultString = resultString[stringKey]
-		}
-
-		resultString = resultString as unknown as string
-
-		if (typeof resultString !== 'string') {
+			console.warn(`Couldn't find a translation for key '${key}' in '${languageId}' language`)
 			return key
 		}
+		resultString = resultString[stringKey]
+	}
 
-		resultString = resultString.replace(new RegExp('{.*?}', 'g'), (match) => {
-			const paramKey = match.substring(1, match.length - 1)
-			return parameters[paramKey]?.toString() ?? `{${paramKey}}`
-		})
+	resultString = resultString as unknown as string
 
-		return resultString
+	if (typeof resultString !== 'string') {
+		if ('$' in resultString) {
+			return resultString['$']
+		}
+
+		return key
+	}
+
+	resultString = resultString.replace(new RegExp('{.*?}', 'g'), (match) => {
+		const paramKey = match.substring(1, match.length - 1)
+		return parameters[paramKey]?.toString() ?? `{${paramKey}}`
+	})
+
+	return resultString
+}
+
+export function getT(languageId: string): TFunction {
+	return (key: string, parameters: Record<string, unknown> = {}) => {
+		return translate(languageId, key, parameters)
 	}
 }
 
-export const t = derived(clientLanguage, (language) => getT(language))
+export const t = derived(localSettings, ({ language }) => getT(language))

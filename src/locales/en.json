@@ -1,14 +1,59 @@
 {
-	"items": {
-		"carp": {
-			"name": "Carp"
-		}
-	},
 	"home": {
+		"daily": "Daily bonus",
 		"fishing": "Fishing",
 		"garden": "Garden",
-		"daily": "Daily bonus",
-		"players": "Players",
-		"news": "News"
+		"news": "News",
+		"players": "Players"
+	},
+	"items": {
+		"anchovy": {
+			"name": "Anchovy"
+		},
+		"carp": {
+			"name": "Carp"
+		},
+		"carrot": {
+			"name": "Carrot"
+		},
+		"envelope": {
+			"name": "Envelope"
+		},
+		"pufferfish": {
+			"name": "Pufferfish"
+		},
+		"rainbowTrout": {
+			"name": "Rainbow trout"
+		}
+	},
+	"languages": {
+		"en": "English",
+		"fr": "French",
+		"ru": "Russian"
+	},
+	"settings": {
+		"appearance": {
+			"$": "Appearance",
+			"cursiveHeadings": {
+				"subtitle": "Use cozy cursive font for headings",
+				"title": "Cursive headings"
+			},
+			"highContrast": {
+				"subtitle": "Add borders to some elements",
+				"title": "High contrast"
+			},
+			"powerSaving": {
+				"subtitle": "Disable animations for power saving",
+				"title": "Power saving"
+			}
+		},
+		"language": {
+			"$": "Language",
+			"language": "Language",
+			"translating": {
+				"$": "Translating",
+				"enableEditor": "Enable editor"
+			}
+		}
 	}
 }

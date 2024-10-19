@@ -1,5 +1,6 @@
 @mixin card {
 	background: var(--background);
+	border: none;
 	border-radius: 0.5rem;
 	padding: 1rem;
 	box-shadow:

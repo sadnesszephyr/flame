@@ -82,8 +82,6 @@
 					/>
 				{/each}
 			</CellGroup>
-		{:else}
-			
 		{/if}
 	{/if}
 </div>

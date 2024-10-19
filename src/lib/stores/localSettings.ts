@@ -6,6 +6,7 @@ export interface LocalSettings {
 		highContranst: boolean,
 		cursiveHeadings: boolean
 	},
+	language: string,
 	powerSaving: boolean
 }
 
@@ -14,6 +15,9 @@ const defaultSettings: LocalSettings = {
 		highContranst: false,
 		cursiveHeadings: true
 	},
+	language: typeof window !== 'undefined'
+		? window?.Telegram.WebApp.initDataUnsafe.user?.language_code ?? 'en'
+		: 'en',
 	powerSaving: false
 }
 
