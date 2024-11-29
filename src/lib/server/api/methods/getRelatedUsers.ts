@@ -51,7 +51,7 @@ export default createMethod({
 					id: receivedRequest.initiatorId,
 					username: receivedRequest.initiator.username,
 					name: receivedRequest.initiator.name,
-					status: RelationStatus.FriendRequestRecieved
+					status: RelationStatus.FriendRequestReceived
 				})
 			}
 		})

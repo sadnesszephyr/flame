@@ -1,7 +1,7 @@
 export enum RelationStatus {
 	None = 'none',
 	FriendRequestSent = 'friendRequestSent',
-	FriendRequestRecieved = 'friendRequestRecieved',
+	FriendRequestReceived = 'friendRequestReceived',
 	Friend = 'friend',
 	Partner = 'partner'
 }

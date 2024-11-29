@@ -47,7 +47,7 @@ export default createMethod({
 			relationStatus = RelationStatus.FriendRequestSent
 		}
 		else if (!friendshipSentRequest && friendshipReceivedRequest) {
-			relationStatus = RelationStatus.FriendRequestRecieved
+			relationStatus = RelationStatus.FriendRequestReceived
 		}
 
 		return {

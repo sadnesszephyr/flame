@@ -61,7 +61,7 @@
 				{/each}
 			</CellGroup>
 			<CellGroup heading="Followers">
-				{#each relatedUsers.filter((user) => user.status === RelationStatus.FriendRequestRecieved) as user}
+				{#each relatedUsers.filter((user) => user.status === RelationStatus.FriendRequestReceived) as user}
 					<Cell
 						profilehotoUserId={user.id}
 						title={user.name}

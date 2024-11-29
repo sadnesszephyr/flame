@@ -14,7 +14,7 @@
 	async function befriend() {
 		if (!userData) return
 
-		if (userData.relationStatus === RelationStatus.FriendRequestRecieved) {
+		if (userData.relationStatus === RelationStatus.FriendRequestReceived) {
 			userData.relationStatus = RelationStatus.Friend
 		}
 		else {
@@ -25,7 +25,7 @@
 
 		await request('befriend', { id: Number($page.params.id) }).catch(() => {
 			if (userData!.relationStatus === RelationStatus.Friend) {
-				userData!.relationStatus = RelationStatus.FriendRequestRecieved
+				userData!.relationStatus = RelationStatus.FriendRequestReceived
 			}
 			else {
 				userData!.relationStatus = RelationStatus.None
@@ -37,7 +37,7 @@
 		if (!userData) return
 
 		if (userData.relationStatus === RelationStatus.Friend) {
-			userData.relationStatus = RelationStatus.FriendRequestRecieved
+			userData.relationStatus = RelationStatus.FriendRequestReceived
 		}
 		else {
 			userData.relationStatus = RelationStatus.None
@@ -46,7 +46,7 @@
 		await tick()
 
 		await request('befriend', { id: Number($page.params.id), revoke: true }).catch(() => {
-			if (userData!.relationStatus === RelationStatus.FriendRequestRecieved) {
+			if (userData!.relationStatus === RelationStatus.FriendRequestReceived) {
 				userData!.relationStatus = RelationStatus.Friend
 			}
 			else {
@@ -64,12 +64,12 @@
 			<Button
 				variant="secondary"
 				onclick={
-					[RelationStatus.FriendRequestRecieved, RelationStatus.None].includes(userData?.relationStatus)
+					[RelationStatus.FriendRequestReceived, RelationStatus.None].includes(userData?.relationStatus)
 						? befriend
 						: unfriend
 				}
 			>
-				{#if userData?.relationStatus === RelationStatus.FriendRequestRecieved}
+				{#if userData?.relationStatus === RelationStatus.FriendRequestReceived}
 					Accept friend request
 				{:else if userData?.relationStatus === RelationStatus.FriendRequestSent}
 					Cancel friend request
