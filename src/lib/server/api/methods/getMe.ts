@@ -1,7 +1,6 @@
 import database from '$lib/server/database'
 import { createMethod } from '../Method'
 import { z } from 'zod'
-import type { ClientUser } from '$lib/stores/clientUser'
 import { eq } from 'drizzle-orm'
 import { inventoryItems } from '$lib/server/database/schema'
 import type { ItemId } from '$lib/items'
@@ -9,7 +8,7 @@ import type { ItemId } from '$lib/items'
 export default createMethod({
 	id: 'getMe',
 	bodySchema: z.null(),
-	async handler({ user }): Promise<ClientUser> {
+	async handler({ user }) {
 		const items = await database.query.inventoryItems.findMany({
 			where: eq(inventoryItems.userId, user.id)
 		})
@@ -24,7 +23,7 @@ export default createMethod({
 			isAdmin: user.isAdmin,
 			exp: user.exp,
 			translatorLanguages: user.translatorLanguages ?? undefined,
-			lastFishedAt: user.lastFishedAt ?? undefined,
+			lastFishedAt: user.lastFishedAt?.toString() ?? undefined,
 			inventoryItems: items.map((item) => ({
 				itemId: item.itemId as ItemId,
 				quantity: item.quantity

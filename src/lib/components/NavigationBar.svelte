@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores'
+	import { useClientUser } from '$lib/clientUser.svelte'
 	import { ProfilePhoto } from '$lib/components'
-	// import { userData } from '$lib/client/store'
 	import { House, Map } from '$lib/components/icons'
-	import { clientUser } from '$lib/stores/clientUser'
-	// import ProfilePhoto from '$lib/client/components/ProfilePhoto.svelte'
+
+	const clientUser = useClientUser()
 	
 	let segments = [{
 		icon: House,
@@ -23,9 +23,9 @@
 		<a href={segment.page} class="segment" class:active={$page.url.pathname === segment.page}>
 			<div class="icon-container">
 				{#if typeof segment.icon === 'string'}
-					<ProfilePhoto size="1.5rem" userId={$clientUser!.id}/>
+					<ProfilePhoto size="1.5rem" userId={clientUser.id}/>
 				{:else}
-					<svelte:component this={segment.icon}/>
+					<segment.icon/>
 				{/if}
 			</div>
 			<span class="segment-label">{segment.label}</span>

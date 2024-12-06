@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
+	import { PUBLIC_TELEGRAM_BOT_ID } from '$env/static/public'
 	import { Button } from '$lib/components'
 
 	if (localStorage.getItem('token')) {
@@ -9,7 +10,7 @@
 	function login() {
 		window.Telegram.Login.auth(
 			{
-				bot_id: '6495156060'
+				bot_id: PUBLIC_TELEGRAM_BOT_ID
 			},
 			async (data) => {
 				if (!data) {

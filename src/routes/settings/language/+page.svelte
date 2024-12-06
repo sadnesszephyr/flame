@@ -4,15 +4,17 @@
 	import { Translate } from '$lib/components/icons'
 	import { languages } from '$lib/localization/languages'
 	import { t } from '$lib/localization/translator'
-	import { clientUser } from '$lib/stores/clientUser'
 	import { localSettings } from '$lib/stores/localSettings'
+	import { useClientUser } from '$lib/clientUser.svelte'
+
+	const clientUser = useClientUser()
 
 	window.Telegram.WebApp.BackButton.show()
 	window.Telegram.WebApp.BackButton.onClick(() => goto('/settings'))
 </script>
 
 <div class="container">
-	{#if $clientUser?.translatorLanguages}
+	{#if clientUser.translatorLanguages}
 		<CellGroup heading={$t('settings.language.translating')}>
 			<Cell
 				type="switch"

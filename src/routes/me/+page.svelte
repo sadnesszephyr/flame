@@ -1,23 +1,25 @@
 <script lang="ts">
+	import { useClientUser } from '$lib/clientUser.svelte'
 	import { Cell, CellGroup, ProfilePhoto } from '$lib/components'
 	import { Logout, Settings, Shield } from '$lib/components/icons'
-	import { clientUser } from '$lib/stores/clientUser'
+
+	const clientUser = useClientUser()
 
 	window.Telegram.WebApp.BackButton.hide()
 </script>
 
 <div class="container">
 	<div class="profile-card">
-		<ProfilePhoto userId={$clientUser!.id} size="8rem"/>
-		<span class="username">@{$clientUser!.username}</span>
+		<ProfilePhoto userId={clientUser.id} size="8rem"/>
+		<span class="username">@{clientUser.username}</span>
 	</div>
 	
 	<CellGroup>
 		<Cell type="link" title="Settings" href="/settings" icon={Settings}/>
-		{#if $clientUser!.isAdmin}
+		{#if clientUser.isAdmin}
 			<Cell type="link" title="Admin page" href="/admin" icon={Shield}/>
 		{/if}
-		<Cell type="default" title="Log out" variant="danger" icon={Logout}/>
+		<Cell type="default" onclick={() => clientUser.logOut()} title="Log out" variant="danger" icon={Logout}/>
 	</CellGroup>
 </div>
 

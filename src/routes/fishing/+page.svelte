@@ -4,17 +4,19 @@
 	import { onMount, onDestroy } from 'svelte'
 	import { selectWeightedRandom } from '$lib/random'
 	import { FishableComponent } from '$lib/items/components'
-	import { clientUser } from '$lib/stores/clientUser'
 	import { request } from '$lib/request'
 	import { fade, fly } from 'svelte/transition'
 	import { cubicOut } from 'svelte/easing'
 	import { t } from '$lib/localization'
+	import { useClientUser } from '$lib/clientUser.svelte'
+
+	const clientUser = useClientUser()
 
 	let deviceAngle = $state(0)
 	let fishingRodCasted = $state(false)
 	let fishingTimeRemained = $state(
-		$clientUser!.lastFishedAt?.getTime()
-			? $clientUser!.lastFishedAt.getTime() + 30_000 - new Date().getTime()
+		clientUser.lastFishedAt?.getTime()
+			? clientUser.lastFishedAt.getTime() + 30_000 - new Date().getTime()
 			: 0
 	)
 	let tookTheBait = $state(false)
@@ -33,11 +35,11 @@
 			fishedItem = selectWeightedRandom(
 				fishableItems,
 				(item) => item.components.find((c) => c instanceof FishableComponent)!.chanceWeight,
-				$clientUser!.lastFishedAt?.getTime() ?? $clientUser!.id
+				clientUser.lastFishedAt?.getTime() ?? clientUser.id
 			)
 
 			const catchData = await request('catchFish')
-			$clientUser!.lastFishedAt = new Date(catchData.catchedAt)
+			clientUser.lastFishedAt = new Date(catchData.catchedAt)
 			fishingTimeRemained = catchData.catchedAt + 30_000 - new Date().getTime()
 
 			return
@@ -81,8 +83,8 @@
 	function updateFishingProgress() {
 		requestAnimationFrame(updateFishingProgress)
 
-		if ($clientUser!.lastFishedAt) {
-			fishingTimeRemained = $clientUser!.lastFishedAt.getTime() + 30_000 - new Date().getTime()
+		if (clientUser.lastFishedAt) {
+			fishingTimeRemained = clientUser.lastFishedAt.getTime() + 30_000 - new Date().getTime()
 		}
 		else {
 			fishingTimeRemained = 0
@@ -239,6 +241,7 @@
 			position: absolute;
 			inset: 0;
 			padding: 0 1rem;
+			color: white;
 		}
 	}
 

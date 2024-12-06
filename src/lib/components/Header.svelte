@@ -1,21 +1,23 @@
 <script>
 	import { ripple } from '$lib/actions'
-	import { clientUser } from '$lib/stores/clientUser'
 	import { cubicOut } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
 	import { getExpForNextLevel } from '$lib/leveling'
+	import { useClientUser } from '$lib/clientUser.svelte'
 
-	const xpProgress = tweened($clientUser?.exp, {
+	const clientUser = useClientUser()
+
+	const xpProgress = tweened(clientUser.exp, {
 		duration: 200,
 		easing: cubicOut
 	})
 
-	const coinsDisplayValue = tweened($clientUser?.coins ?? 0, {
+	const coinsDisplayValue = tweened(clientUser.coins, {
 		duration: 500,
 		easing: cubicOut
 	})
 
-	const rubiesDisplayValue = tweened($clientUser?.rubies ?? 0, {
+	const rubiesDisplayValue = tweened(clientUser.rubies, {
 		duration: 500,
 		easing: cubicOut
 	})
@@ -23,11 +25,11 @@
 
 <header class="header">
 	<button use:ripple class="level">
-		<span>{$clientUser?.level}</span>
+		<span>{clientUser.level}</span>
 		<div class="level-progress">
 			<div
 				class="level-progress-value"
-				style:width={($xpProgress / getExpForNextLevel($clientUser?.level ?? 0)) * 100 + '%'}
+				style:width={($xpProgress / getExpForNextLevel(clientUser.level)) * 100 + '%'}
 			></div>
 		</div>
 	</button>

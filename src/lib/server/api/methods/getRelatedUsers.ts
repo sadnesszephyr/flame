@@ -1,7 +1,7 @@
 import database from '$lib/server/database'
 import { createMethod } from '../Method'
 import { z } from 'zod'
-import type { UserRelation } from '$lib/stores/clientUser'
+import type { UserRelation } from '$lib/clientUser.svelte'
 import { RelationStatus } from '$lib/constants'
 
 export default createMethod({
