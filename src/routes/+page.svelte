@@ -4,8 +4,6 @@
 	import { Button, Dialog } from '$lib/components'
 	import ItemSprite from '$lib/components/itemSprite/ItemSprite.svelte'
 	import { t } from '$lib/localization'
-
-	let modalOpen = $state(false)
 </script>
 
 <div class="container">
