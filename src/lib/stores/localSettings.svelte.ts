@@ -1,4 +1,3 @@
-import { writable } from 'svelte/store'
 import merge from 'deepmerge'
 
 export interface LocalSettings {
@@ -9,6 +8,9 @@ export interface LocalSettings {
 	language: string,
 	powerSaving: boolean
 }
+
+const localStorageSettingsString = localStorage.getItem('localSettings')
+const localStorageSettings = localStorageSettingsString ? JSON.parse(localStorageSettingsString) : undefined
 
 const defaultSettings: LocalSettings = {
 	appearance: {
@@ -21,15 +23,8 @@ const defaultSettings: LocalSettings = {
 	powerSaving: false
 }
 
-const localStorageSettingsString = localStorage.getItem('localSettings')
-const localStorageSettings = localStorageSettingsString ? JSON.parse(localStorageSettingsString) : undefined
-
-export const localSettings = writable<LocalSettings>(
+export const localSettings = $state(
 	localStorageSettings
 		? merge(defaultSettings, localStorageSettings)
 		: defaultSettings
 )
-
-localSettings.subscribe((newValue) => {
-	localStorage.setItem('localSettings', JSON.stringify(newValue))
-})

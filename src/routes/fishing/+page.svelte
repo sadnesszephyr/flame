@@ -147,8 +147,8 @@
 			<div class="drop" in:fly={{ y: -32 }}>
 				<ItemSprite id={fishedItem.sprite} size="10rem"/>
 			</div>
-			<span class="drop-name">{$t(`items.${fishedItem.id}.name`)}</span>
-			<span class="drop-description">{$t(`items.${fishedItem.id}.description`)}</span>
+			<span class="drop-name">{t(`items.${fishedItem.id}.name`)}</span>
+			<span class="drop-description">{t(`items.${fishedItem.id}.description`)}</span>
 		</div>
 	{/if}
 </div>

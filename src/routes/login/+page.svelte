@@ -34,7 +34,7 @@
 </script>
 
 <div class="container">
-	<Button onclick={login}>Login with Telegram</Button>
+	<Button onclick={login}>Login with Telegram </Button>
 	<Button variant="secondary" href="https://t.me/campfire_game_bot">Continue in Telegram App</Button>
 </div>
 

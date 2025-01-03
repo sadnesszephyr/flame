@@ -7,7 +7,7 @@
 	import { useClientUserUnsafe, ClientUser } from '$lib/clientUser.svelte'
 	import { NavigationBar, Snackbars, Header, AppLoader } from '$lib/components'
 	// import { snackbar } from '$lib/components/snackbar/store'
-	import { localSettings } from '$lib/stores/localSettings'
+	import { localSettings } from '$lib/stores/localSettings.svelte'
 	import { supabase } from '$lib/supabase'
 	import '../styles/global.scss'
 	import { request } from '$lib/request'
@@ -95,10 +95,10 @@
 			.subscribe()
 	}
 
-	localSettings.subscribe(({ appearance }) => {
-		document.body.classList.toggle('high-contrast', appearance.highContranst)
-		document.body.classList.toggle('cursive-headings', appearance.cursiveHeadings)
-	})
+	// localSettings.subscribe(({ appearance }) => {
+	// 	document.body.classList.toggle('high-contrast', appearance.highContranst)
+	// 	document.body.classList.toggle('cursive-headings', appearance.cursiveHeadings)
+	// })
 </script>
 
 <svelte:head>
@@ -108,7 +108,6 @@
 
 <div class="app">
 	{#if $page.url.pathname === '/login'}
-		<!--  -->
 		{@render children()}
 	{:else if clientDataLoaded}
 		<Header />

@@ -1,6 +1,6 @@
 import { request } from '$lib/request'
 import { ClientUser } from '$lib/clientUser.svelte'
-import type { LayoutLoad } from './$types'
+import type { LayoutLoad } from './types'
 
 export const ssr = false
 export const trailingSlash = 'never'

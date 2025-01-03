@@ -1,1 +1,1 @@
-export { t, getT } from './translator'
+export { t, getT } from './translator.svelte'

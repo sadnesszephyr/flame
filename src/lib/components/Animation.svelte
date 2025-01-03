@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { localSettings } from '$lib/stores/localSettings'
+	import { localSettings } from '$lib/stores/localSettings.svelte'
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player'
 
 	interface Props {
@@ -14,7 +14,7 @@
 <div class="animation" style:width={size}>
 	<LottiePlayer
 		src={stringifiedSrc}
-		autoplay={!$localSettings}
+		autoplay={!localSettings.powerSaving}
 		width={size}
 	/>
 </div>

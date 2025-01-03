@@ -24,7 +24,7 @@
 </div>
 
 <style lang="scss">
-	@import "src/styles/mixins.scss";
+	@use "../../styles/mixins";
 
 	.container {
 		display: flex;
@@ -33,7 +33,7 @@
 	}
 
 	.profile-card {
-		@include full-card;
+		@include mixins.full-card;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
