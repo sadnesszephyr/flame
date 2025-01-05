@@ -34,6 +34,7 @@
 </script>
 
 <div class="container">
+	<img src="/icons/icon-384x384.png" alt="Campfire Logo" class="logo" draggable="false" />
 	<Button onclick={login}>Login with Telegram </Button>
 	<Button variant="secondary" href="https://t.me/campfire_game_bot">Continue in Telegram App</Button>
 </div>
@@ -46,5 +47,13 @@
 		padding: 1rem;
 		justify-content: center;
 		height: 100%;
+	}
+
+	.logo {
+		border-radius: 50%;
+		max-width: 12rem;
+		width: 100%;
+		align-self: center;
+		margin-bottom: 4rem;
 	}
 </style>
