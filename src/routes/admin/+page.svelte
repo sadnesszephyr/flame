@@ -6,7 +6,7 @@
 	let method: string = $state('')
 	let body: string = $state('')
 	let result: unknown = $state('')
-	let route = window.location.origin
+	let route = $state(window.location.origin)
 	let testBool: boolean = $state(false)
 </script>
 
@@ -22,7 +22,7 @@
 		<pre>{JSON.stringify(result, null, 2)}</pre>
 	</div>
 	<div class="card">
-		<TextInput value={route}/>
+		<TextInput bind:value={route}/>
 		<Button>
 			Update link
 		</Button>

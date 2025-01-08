@@ -83,13 +83,13 @@ export async function updateInventory(userId: number, itemId: string, quantity: 
 	}
 }
 
-async function sendEvent(userId: number, name: string, data: unknown) {
+export async function sendEvent(userId: number, name: string, data: unknown) {
 	const channel = supabase.channel(`events-${userId}`)
 
 	channel.send({
 		event: name,
 		type: 'broadcast',
-		payload: { data }
+		payload: data
 	})
 
 	supabase.removeChannel(channel)

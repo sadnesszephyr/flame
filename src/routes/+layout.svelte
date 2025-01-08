@@ -43,32 +43,7 @@
 	// 		inventory.set(userData.inventoryItems)
 	// 		await tick()
 
-	// 		supabase
-	// 			.channel(`events-${userData.id}`)
-	// 			.on(
-	// 				'broadcast',
-	// 				{
-	// 					event: 'inventoryUpdate'
-	// 				},
-	// 				({ payload }: { payload: { data: Inventory } }) => {
-	// 					inventory.update((inv) => {
-	// 						const added = payload.data
-	// 							.filter((item) => !$inventory.find((i) => i.itemId === item.itemId))
-	// 						const updatedAndDeleted = inv.map((item) => {
-	// 							const newItem = payload.data.find((i) => i.itemId === item.itemId)
-
-	// 							if (!newItem) return item
-	// 							if (newItem.quantity === 0) return null
-	// 							return {
-	// 								...item,
-	// 								quantity: newItem.quantity
-	// 							}
-	// 						}).filter((item) => item !== null)
-	// 						return [...added, ...updatedAndDeleted]
-	// 					})
-	// 				}
-	// 			)
-	// 			.subscribe()
+	// 		
 	// 	})
 	// }
 

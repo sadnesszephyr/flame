@@ -28,6 +28,7 @@
 		font-size: 0.875rem;
 		transition: 0.2s;
 		outline: 1px solid transparent;
+		font-family: var(--font);
 
 		&:focus {
 			border-color: var(--accent);
