@@ -22,8 +22,11 @@ export async function POST(event: RequestEvent) {
 	console.log(discordAccessTokenRequestData);
 
 	const discordTokenData = await fetch(`https://discord.com/api/oauth2/token`, {
-		body: JSON.stringify(discordAccessTokenRequestData),
+		body: new URLSearchParams(Object.entries(discordAccessTokenRequestData)),
 		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
 	}).then((res) => res.json());
 
 	console.log(discordTokenData);
