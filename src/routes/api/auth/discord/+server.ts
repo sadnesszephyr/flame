@@ -11,14 +11,18 @@ export async function POST(event: RequestEvent) {
 
 	console.log(body)
 
+	const discordAccessTokenRequestData = {
+		grant_type: 'authorization_code',
+		code: body.code,
+		redirect_uri: `${PUBLIC_BASE_URL}/login?method=discord`,
+		client_id: PUBLIC_DISCORD_CLIENT_ID,
+		client_secret: DISCORD_CLIENT_SECRET,
+	};
+
+	console.log(discordAccessTokenRequestData);
+
 	const discordTokenData = await fetch(`https://discord.com/api/oauth2/token`, {
-		body: JSON.stringify({
-			grant_type: 'authorization_code',
-			code: body.code,
-			redirect_uri: `${PUBLIC_BASE_URL}/login?method=discord`,
-			client_id: PUBLIC_DISCORD_CLIENT_ID,
-			client_secret: DISCORD_CLIENT_SECRET
-		}),
+		body: JSON.stringify(discordAccessTokenRequestData),
 		method: 'POST',
 	}).then((res) => res.json());
 
