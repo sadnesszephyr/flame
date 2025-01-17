@@ -30,7 +30,7 @@ export async function POST(event: RequestEvent) {
 		}
 	}).then((res) => res.json());
 
-	const authResult = await authenticateOrCreateUser('discord', body.id, {
+	const authResult = await authenticateOrCreateUser('discord', discordUserData.user.id, {
 		username: discordUserData.user?.username,
 		name: discordUserData.user?.global_name
 	});
