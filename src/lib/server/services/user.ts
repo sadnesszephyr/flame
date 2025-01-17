@@ -1,5 +1,5 @@
-import { TELEGRAM_LOG_CHAT_ID } from '$env/static/private'
-import { bot } from '$lib/server/bot'
+import { TELEGRAM_LOG_CHAT_ID } from '$env/static/private';
+import { bot } from '$lib/server/bot';
 import database from '$lib/server/database';
 import { authTokens, inventoryItems, users } from '$lib/server/database/schema';
 import { supabase } from '$lib/supabase';
@@ -21,12 +21,12 @@ export async function createUser(initData: NewUserOptions) {
 			name: initData.name,
 			coins: 100,
 			rubies: 0,
-			telegramId: initData.telegramId,
-			discordId: initData.discordId,
+			telegramId: initData.telegramId ?? null,
+			discordId: initData.discordId ?? null,
 		})
 		.onConflictDoNothing()
 		.returning();
-	
+
 	bot.sendMessage(+TELEGRAM_LOG_CHAT_ID, `New user: ${initData.username}`);
 
 	return userData;
