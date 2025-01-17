@@ -9,8 +9,6 @@ import { DISCORD_CLIENT_SECRET } from '$env/static/private'
 export async function POST(event: RequestEvent) {
 	const body = await event.request.json();
 
-	console.log(body)
-
 	const discordAccessTokenRequestData = {
 		grant_type: 'authorization_code',
 		code: body.code,
@@ -18,8 +16,6 @@ export async function POST(event: RequestEvent) {
 		client_id: PUBLIC_DISCORD_CLIENT_ID,
 		client_secret: DISCORD_CLIENT_SECRET,
 	};
-
-	console.log(discordAccessTokenRequestData);
 
 	const discordTokenData = await fetch(`https://discord.com/api/oauth2/token`, {
 		body: new URLSearchParams(Object.entries(discordAccessTokenRequestData)),
@@ -29,8 +25,6 @@ export async function POST(event: RequestEvent) {
 		},
 	}).then((res) => res.json());
 
-	console.log(discordTokenData);
-
 	const discordToken = discordTokenData?.access_token;
 
 	const discordUserData = await fetch(`https://discord.com/api/users/@me`, {
@@ -39,11 +33,9 @@ export async function POST(event: RequestEvent) {
 		}
 	}).then((res) => res.json());
 
-	console.log(discordUserData);
-
-	const authResult = await authenticateOrCreateUser('discord', discordUserData.user.id, {
-		username: discordUserData.user?.username,
-		name: discordUserData.user?.global_name
+	const authResult = await authenticateOrCreateUser('discord', discordUserData.id, {
+		username: discordUserData.username,
+		name: discordUserData.global_name
 	});
 		
 	return json(authResult);
