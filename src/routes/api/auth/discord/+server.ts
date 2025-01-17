@@ -22,6 +22,8 @@ export async function POST(event: RequestEvent) {
 		method: 'POST',
 	}).then((res) => res.json());
 
+	console.log(discordTokenData);
+
 	const discordToken = discordTokenData?.access_token;
 
 	const discordUserData = await fetch(`https://discord.com/api/users/@me`, {
@@ -29,6 +31,8 @@ export async function POST(event: RequestEvent) {
 			Authorization: `Bearer ${discordToken}`
 		}
 	}).then((res) => res.json());
+
+	console.log(discordUserData);
 
 	const authResult = await authenticateOrCreateUser('discord', discordUserData.user.id, {
 		username: discordUserData.user?.username,
