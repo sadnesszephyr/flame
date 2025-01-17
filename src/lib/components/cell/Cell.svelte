@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions'
-	import type { iconComponent } from '$lib/components/icons'
+	import type { IconComponent } from '$lib/components/icons'
 	import { Switch, ProfilePhoto } from '$lib/components'
 
 	type CellVariant = 'default' | 'danger'
@@ -10,7 +10,7 @@
 		type?: string,
 		title: string,
 		subtitle?: string,
-		icon?: iconComponent,
+		icon?: IconComponent,
 		imageUrl?: string,
 		profilehotoUserId?: number,
 		href?: never,

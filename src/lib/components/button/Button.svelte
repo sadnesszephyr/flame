@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple'
+	import type { IconComponent } from '$lib/components/icons';
 	import type { Snippet } from 'svelte'
 	import type { HTMLButtonAttributes } from 'svelte/elements'
 
@@ -8,19 +9,23 @@
 		href?: string,
 		variant?: 'primary' | 'secondary' | 'link',
 		size?: 'small' | 'default',
-		square?: boolean
+		shape?: 'default' | 'square' | 'rounded',
+		prefixIcon?: IconComponent,
+		suffixIcon?: IconComponent,
 	}
 
 	const {
 		href,
 		variant = 'primary',
 		size,
-		square,
+		shape,
 		children,
+		prefixIcon: PrefixIcon,
+		suffixIcon: SuffixIcon,
 		...restProps
 	}: ButtonProps = $props()
 
-	let className = $derived(['button', variant, size].join(' '))
+	let className = $derived(['button', variant, size])
 </script>
 
 <svelte:element
@@ -28,13 +33,18 @@
 	tabindex="0"
 	this={href ? 'a' : 'button'}
 	class={className}
-	class:square
 	draggable={false}
 	{...restProps}
 	{href}
 	use:ripple
 >
+	{#if PrefixIcon}
+		<PrefixIcon/>
+	{/if}
 	{@render children()}
+	{#if SuffixIcon}
+		<SuffixIcon/>
+	{/if}
 </svelte:element>
 
 <style lang="scss">
@@ -51,7 +61,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.5ch;
+		gap: 0.75rem;
 		flex-shrink: 0;
 		text-wrap: nowrap;
 		text-decoration: none;

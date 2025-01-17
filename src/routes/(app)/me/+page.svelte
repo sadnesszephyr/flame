@@ -24,7 +24,7 @@
 </div>
 
 <style lang="scss">
-	@use "../../styles/mixins";
+	@use "/src/styles/mixins";
 
 	.container {
 		display: flex;

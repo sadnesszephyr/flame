@@ -2,7 +2,9 @@ import { relations } from 'drizzle-orm'
 import { bigint, boolean, date, integer, jsonb, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('user', {
-	id: bigint('id', { mode: 'number' }).primaryKey(),
+	id: serial('id').primaryKey(),
+	telegramId: bigint('telegram_id', { mode: 'number' }).unique(),
+	discordId: bigint('discord_id', { mode: 'number' }).unique(),
 	username: text('username').notNull().unique(),
 	name: text('name').notNull(),
 	coins: integer('coins').notNull(),

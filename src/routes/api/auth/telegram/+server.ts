@@ -3,6 +3,7 @@ import cryptoEs from 'crypto-es'
 import { TELEGRAM_BOT_TOKEN } from '$env/static/private'
 import database from '$lib/server/database'
 import { authTokens } from '$lib/server/database/schema'
+import { authenticateOrCreateUser } from '$lib/server/services/user'
 
 export async function POST(event: RequestEvent) {
 	const body = await event.request.json()
@@ -17,8 +18,6 @@ export async function POST(event: RequestEvent) {
 	const dataCheckString = v.map(([k, v]) => `${k}=${v}`).join('\n')
 	const secretKey = cryptoEs.SHA256(TELEGRAM_BOT_TOKEN)
 	const key = cryptoEs.HmacSHA256(dataCheckString, secretKey).toString(cryptoEs.enc.Hex)
-	console.log(key)
-	console.log(hash)
 
 	const isValid = key === hash
 
@@ -27,22 +26,11 @@ export async function POST(event: RequestEvent) {
 			message: 'Couldn\'t validate your login data'
 		})
 	}
-
-	const alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-	const tokenLength = 64
-
-	let token = ''
-
-	for (let i = 0; i < tokenLength; i++) {
-		token += alphabet[Math.floor(Math.random() * alphabet.length)]
-	}
-
-	await database
-		.insert(authTokens)
-		.values({
-			userId: body.id,
-			token
-		})
 	
-	return json({ token })
+	const authResult = await authenticateOrCreateUser('telegram', body.id, {
+		username: body.username ?? body.first_name,
+		name: body.first_name ?? body.username ?? 'Unknown'
+	})
+	
+	return json(authResult);
 }

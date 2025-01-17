@@ -1,3 +1,3 @@
-import * as icons from './'
+import * as icons from './';
 
-export type iconComponent = typeof icons[keyof typeof icons]
+export type IconComponent = (typeof icons)[keyof typeof icons];
