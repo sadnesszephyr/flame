@@ -13,21 +13,21 @@ interface NewUserOptions {
 	discordId?: number;
 }
 
-export async function createUser(initData: NewUserOptions) {
+export async function createUser(options: NewUserOptions) {
 	const [userData] = await database
 		.insert(users)
 		.values({
-			username: initData.username,
-			name: initData.name,
+			username: options.username,
+			name: options.name,
 			coins: 100,
 			rubies: 0,
-			telegramId: initData.telegramId ?? null,
-			discordId: initData.discordId ?? null,
+			...(options.telegramId && { telegramId: options.telegramId }),
+			...(options.discordId && { discordId: options.discordId }),
 		})
 		.onConflictDoNothing()
 		.returning();
 
-	bot.sendMessage(+TELEGRAM_LOG_CHAT_ID, `New user: ${initData.username}`);
+	bot.sendMessage(+TELEGRAM_LOG_CHAT_ID, `New user: ${options.username}`);
 
 	return userData;
 }
