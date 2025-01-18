@@ -39,7 +39,7 @@
 		background: var(--background);
 		display: flex;
 		height: 5rem;
-		view-transition-name: disabled;
+		// view-transition-name: disabled;
 		box-shadow:
 			0 var(--border-width) 0 0 var(--border-color) inset;
 		
@@ -104,11 +104,5 @@
 		@media screen and (max-height: 590px) {
 			display: none;
 		}
-	}
-
-	.profile-photo {
-		width: 1.5rem;
-		height: 1.5rem;
-		border-radius: 50%;
 	}
 </style>

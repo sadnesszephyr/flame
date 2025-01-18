@@ -31,7 +31,7 @@
 		width: 100%;
 		height: 3.5rem;
 		padding: 0 0.25rem;
-		view-transition-name: top-bar;
+		// view-transition-name: top-bar;
 	}
 
 	.headline {

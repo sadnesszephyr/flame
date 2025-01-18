@@ -84,7 +84,7 @@
 		background: var(--background);
 		z-index: 5;
 		position: relative;
-		view-transition-name: header;
+		// view-transition-name: header;
 		animation: none;
 	}
 

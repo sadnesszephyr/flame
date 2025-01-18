@@ -103,7 +103,7 @@ export async function sendEvent(userId: number, name: string, data: unknown) {
 export async function authenticateOrCreateUser(
 	method: 'telegram' | 'discord',
 	id: number,
-	newUserOptions: NewUserOptions,
+	newUserOptions: Omit<NewUserOptions, 'telegramId' | 'discordId'>,
 ) {
 	const alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 	const tokenLength = 64;

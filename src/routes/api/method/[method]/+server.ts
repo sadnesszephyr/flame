@@ -58,8 +58,6 @@ export async function POST(event: RequestEvent) {
 			},
 		});
 
-		console.log(token);
-
 		if (!token) {
 			error(403);
 		}

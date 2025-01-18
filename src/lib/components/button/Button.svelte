@@ -61,7 +61,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.75rem;
+		gap: 0.5rem;
 		flex-shrink: 0;
 		text-wrap: nowrap;
 		text-decoration: none;
@@ -69,7 +69,6 @@
 		font-family: var(--font);
 		outline: none;
 		transition: 0.2s;
-		// flex: 1;
 
 		&:disabled {
 			cursor: default;

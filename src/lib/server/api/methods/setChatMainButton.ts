@@ -9,7 +9,6 @@ export default createMethod({
 		enabled: z.boolean()
 	}),
 	async handler({ user, body }) {
-		console.log(body)
 		if (body.enabled) {
 			await bot.setChatMenuButton(user.id, new MenuButtonWebApp({
 				text: 'Open!',

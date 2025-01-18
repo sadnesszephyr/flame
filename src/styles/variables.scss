@@ -32,7 +32,8 @@
 	--foreground-fallback: #333333;
 	--foreground-subtle-fallback: #999999;
 	--section-header-fallback: #2C94EC;
-	--accent-fallback: #50A8EB;
+	// --accent-fallback: #50A8EB;
+	--accent-fallback: #F7A664;
 	--accent-foreground-fallback: #FFFFFF;
 	--link-fallback: #328AE5;
 	--danger-fallback: #CC2929;
@@ -50,7 +51,9 @@
 	--foreground-fallback: #FFFFFF;
 	--foreground-subtle-fallback: #7D7D7D;
 	--section-header-fallback: #6CB6F8;
-	--accent-fallback: #50A8EB;
+	// --accent-fallback: #50A8EB;
+	// TODO
+	--accent-fallback: color-mix(in srgb, #D87657, #F7A664);
 	--accent-foreground-fallback: #FFFFFF;
 	--link-fallback: #57A7E0;
 	--danger-fallback: #EE686F;

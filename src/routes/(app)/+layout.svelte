@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { dev } from '$app/environment'
-	import { beforeNavigate, goto, onNavigate } from '$app/navigation'
-	import { base } from '$app/paths'
-	import { page } from '$app/stores'
-	import { appManager } from '$lib/AppManager'
-	import { useClientUserUnsafe, ClientUser } from '$lib/clientUser.svelte'
-	import { NavigationBar, Snackbars, Header, AppLoader } from '$lib/components'
-	// import { snackbar } from '$lib/components/snackbar/store'
-	import { localSettings } from '$lib/stores/localSettings.svelte'
-	import { supabase } from '$lib/supabase'
-	import { request } from '$lib/request'
-	import { fade } from 'svelte/transition'
-	import { tick } from 'svelte'
+	import { dev } from '$app/environment';
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
+	import { page } from '$app/state';
+	import { appManager } from '$lib/AppManager';
+	import { ClientUser } from '$lib/clientUser.svelte';
+	import { AppLoader, Header, NavigationBar, Snackbars } from '$lib/components';
+	import { request } from '$lib/request';
+	import { supabase } from '$lib/supabase';
+	import { tick } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	let { children } = $props()
 	let clientDataLoaded = $state(false)
@@ -22,7 +20,7 @@
 		}
 	}
 
-	if ($page.url.pathname !== '/login') {
+	if (page.url.pathname !== '/login') {
 		request('getMe').then(async (data) => {
 			ClientUser.init(data)
 			await tick()
@@ -45,16 +43,16 @@
 	// 	})
 	// }
 
-	onNavigate(async (navigation) => {
-		if (!('startViewTransition' in document)) return
+	// onNavigate(async (navigation) => {
+	// 	if (!('startViewTransition' in document)) return
 
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve()
-				await navigation.complete
-			})
-		})
-	})
+	// 	return new Promise((resolve) => {
+	// 		document.startViewTransition(async () => {
+	// 			resolve()
+	// 			await navigation.complete
+	// 		})
+	// 	})
+	// })
 
 	if (!appManager.isStandalone) {
 		const channel = supabase.channel(`notifications-${window.Telegram.WebApp.initDataUnsafe.user!.id}`)
@@ -67,11 +65,6 @@
 			})
 			.subscribe()
 	}
-
-	// localSettings.subscribe(({ appearance }) => {
-	// 	document.body.classList.toggle('high-contrast', appearance.highContranst)
-	// 	document.body.classList.toggle('cursive-headings', appearance.cursiveHeadings)
-	// })
 </script>
 
 <svelte:head>
@@ -82,9 +75,11 @@
 <div class="app">
 	{#if clientDataLoaded}
 		<Header />
-		<main class="main" transition:fade={{ duration: 200 }}>
-			{@render children()}
-		</main>
+		{#key page.route}
+			<main class="main" transition:fade={{ duration: 200 }}>
+				{@render children()}
+			</main>
+		{/key}
 		<NavigationBar />
 		<Snackbars />
 	{:else}

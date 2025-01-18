@@ -1,9 +1,7 @@
+import { TELEGRAM_BOT_TOKEN } from '$env/static/private'
+import { authenticateOrCreateUser } from '$lib/server/services/user'
 import { error, json, type RequestEvent } from '@sveltejs/kit'
 import cryptoEs from 'crypto-es'
-import { TELEGRAM_BOT_TOKEN } from '$env/static/private'
-import database from '$lib/server/database'
-import { authTokens } from '$lib/server/database/schema'
-import { authenticateOrCreateUser } from '$lib/server/services/user'
 
 export async function POST(event: RequestEvent) {
 	const body = await event.request.json()

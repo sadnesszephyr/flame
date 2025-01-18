@@ -50,38 +50,38 @@
 	}
 }
 
-:root::view-transition-old(root) {
-	animation: 0.5s linear both opacity-exit;
-}
+// :root::view-transition-old(root) {
+// 	animation: 0.5s linear both opacity-exit;
+// }
 
-:root::view-transition-new(root) {
-	animation: 0.5s linear both opacity-enter;
-}
+// :root::view-transition-new(root) {
+// 	animation: 0.5s linear both opacity-enter;
+// }
 
-html.transition-forward::view-transition-old(root) {
-	animation:
-		0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both forward-exit,
-		0.5s linear both opacity-exit;
-}
+// html.transition-forward::view-transition-old(root) {
+// 	animation:
+// 		0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both forward-exit,
+// 		0.5s linear both opacity-exit;
+// }
 
-html.transition-forward::view-transition-new(root) {
-	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both forward-enter,
-	0.5s linear both opacity-enter;
-}
+// html.transition-forward::view-transition-new(root) {
+// 	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both forward-enter,
+// 	0.5s linear both opacity-enter;
+// }
 
-html.transition-backward::view-transition-old(root) {
-	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both backward-exit,
-	0.5s linear both opacity-exit;
-}
+// html.transition-backward::view-transition-old(root) {
+// 	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both backward-exit,
+// 	0.5s linear both opacity-exit;
+// }
 
-html.transition-backward::view-transition-new(root) {
-	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both backward-enter,
-	0.5s linear both opacity-enter;
-}
+// html.transition-backward::view-transition-new(root) {
+// 	animation: 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) both backward-enter,
+// 	0.5s linear both opacity-enter;
+// }
 
 
-:root::view-transition-group(disabled),
-:root::view-transition-old(disabled),
-:root::view-transition-new(disabled) {
-    animation-duration: 0s !important;
-}
+// :root::view-transition-group(disabled),
+// :root::view-transition-old(disabled),
+// :root::view-transition-new(disabled) {
+//     animation-duration: 0s !important;
+// }

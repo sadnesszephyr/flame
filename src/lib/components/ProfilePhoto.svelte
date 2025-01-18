@@ -1,13 +1,13 @@
 <script lang="ts">
 	interface Props {
-		userId: number,
-		size?: string,
-		fallbackLetter?: string
+		userId: number;
+		size?: string;
+		fallbackLetter?: string;
 	}
 
-	const { userId, size = '4rem', fallbackLetter = 'u' }: Props = $props()
+	const { userId, size = '4rem', fallbackLetter = 'u' }: Props = $props();
 
-	let loaded = $state(false)
+	let loaded = $state(false);
 </script>
 
 <div style:--size={size} class="profile-photo">
@@ -19,7 +19,7 @@
 		src={`/profilePhoto/${userId}`}
 		alt="profile photo"
 		onload={() => loaded = true}
-	>
+	/>
 	<span class="fallback-letter">{fallbackLetter}</span>
 </div>
 
@@ -35,8 +35,9 @@
 		align-items: center;
 		justify-content: center;
 		position: relative;
+		box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 10%, transparent);
 	}
-	
+
 	.image {
 		width: 100%;
 		height: 100%;
@@ -45,6 +46,7 @@
 		position: absolute;
 		left: 0;
 		top: 0;
+		display: none;
 
 		&.loaded {
 			opacity: 1;
@@ -53,5 +55,7 @@
 
 	.fallback-letter {
 		color: var(--foreground-subtle);
+		font-size: calc(var(--size) / 2);
+		line-height: 100%;
 	}
 </style>

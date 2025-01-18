@@ -28,7 +28,6 @@ declare global {
 		Telegram: Telegram & {
 			Login: {
 				widgetsOrigin: string,
-				// eslint-disable-next-line no-unused-vars
 				auth: (options: AuthOptions, callback: (data: AuthData | false) => void) => void
 			}
 		}
@@ -42,7 +41,6 @@ declare global {
 	}
 
 	interface Document {
-		// eslint-disable-next-line no-unused-vars
 		startViewTransition(updateCallback: () => Promise<void>): ViewTransition
 	}
 }
